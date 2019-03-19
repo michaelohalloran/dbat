@@ -1,0 +1,17 @@
+/* .stock-grid {
+	display: grid;
+	grid-template-columns: repeat(5, 1fr);
+	background-color: orange;
+	grid-gap: 1%;
+	height: 100%;
+	grid-template-rows: repeat(3, 1fr);
+	grid-row: auto;
+	margin: 2%;
+} */
+
+.stock-box {
+	background-color: gray;
+	border: 1px solid black;
+	margin: 3%;
+	/* width: 32%; */
+}

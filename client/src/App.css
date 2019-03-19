@@ -1,33 +1,343 @@
-.App {
-  text-align: center;
+html,
+body {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	height: 100%;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
-  pointer-events: none;
+body {
+	position: relative;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.container {
+	display: grid;
+	grid-template-columns: repeat(6, 1fr);
+	/* grid-template-rows: auto repeat(14, 1fr); */
 }
 
-.App-link {
-  color: #61dafb;
+/* *************************************** */
+/* NAVBAR */
+/* *************************************** */
+
+.links {
+	grid-column: span 6;
+	/* grid-row: 1/2; */
+	background-color: #2170ef;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	list-style: none;
+	color: white;
+	font-size: 1.1rem;
+	margin: 0;
+	padding: 0; /*eliminate extra left space */
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* https://repl.it/@mike314151/Links-navbar-grid?language=html&folderId= */
+
+.links > li:nth-child(1) {
+	margin-right: auto;
+}
+
+.link-bold {
+	font-size: 1.2rem;
+	font-weight: bold;
+	text-transform: uppercase;
+}
+
+.links > li {
+	margin: 1%;
+}
+
+/* .nav-hr {
+    width: 1%;
+    color: gray;
+    height: 100%;
+} */
+
+/* *************************************** */
+/* LEFT SIDE */
+/* *************************************** */
+
+.grid-img-container {
+	/* display: flex; */
+	/* flex-wrap: wrap; */
+	/* width: 60%; */
+	grid-column: 1/span 3;
+	/* grid-row: 2/10; */
+	/* background: lightsalmon; */
+	margin: 5%;
+	display: grid;
+	grid-gap: 1%;
+	grid-template-columns: repeat(3, 1fr);
+}
+
+.header {
+	text-align: center;
+	grid-column: 1/-1;
+}
+
+.grid-item {
+	width: 31%;
+	margin: 1%;
+	height: auto; /*to match width, make it square */
+}
+
+.grid-item:hover {
+	transform: scale(1.1);
+	border: 1px solid black;
+	cursor: pointer;
+	transition: transform 1s ease;
+}
+
+/* hr {
+    width: 1px;
+    height: 100vh;
+} */
+
+/* *************************************** */
+/* RIGHT SIDE */
+/* *************************************** */
+
+.large-img-container {
+	/* width: 40%; */
+	grid-column: 4 / span 3;
+	grid-row: 2 / span 4;
+	/* background: lightgoldenrodyellow; */
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
+	border-left: 1.5px solid lightgray;
+}
+
+.img-text-container {
+	/* position: relative; */
+}
+
+.typed-text {
+	position: absolute;
+	left: 75%;
+	top: 25%;
+	transform: translate(-50%, -50%);
+	color: white;
+	font-weight: bold;
+	font-family: Helvetica;
+	background-color: rgba(101, 84, 87, 0.6);
+}
+
+.overlay-text {
+	color: white;
+	background: blueviolet;
+	position: absolute;
+	top: 50%;
+	left: 25%;
+	/* transform: translate(-50%, -50%); */
+}
+
+.input-container,
+.upload-container {
+	display: flex;
+	flex-direction: column;
+}
+
+.large-input {
+	padding: 3.5rem;
+}
+
+label {
+	font-size: 1.2rem;
+	font-weight: bold;
+}
+
+/* ************************ */
+/* BUTTONS */
+/* ************************ */
+
+button {
+	padding: 1% 4%;
+}
+
+.blue-btn {
+	background-color: #2170ef;
+	color: white;
+	font-weight: bold;
+	border-radius: 3.5em;
+	/* padding: 1%; */
+	margin: 2%;
+	border: none;
+}
+
+.blue-btn:hover {
+	color: #2170ef;
+	background-color: white;
+	cursor: pointer;
+	border: 1px solid black;
+	transform: scale(1.1);
+	transition: transform 1s;
+}
+
+.footer-btn-container {
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+}
+
+.footer-btn-container > button:nth-child(1) {
+	margin-right: auto;
+}
+
+.print-btn {
+	background-color: rgb(31, 151, 71);
+	color: white;
+	font-weight: bold;
+	border-radius: 3.5em;
+	/* padding: 1%; */
+	margin: 2%;
+	border: none;
+	/* width: 15%; */
+}
+
+.print-btn:hover {
+	color: rgb(31, 151, 71);
+	background-color: white;
+	cursor: pointer;
+}
+
+/* ********************************* */
+/* ANIMATIONS */
+/* ********************************* */
+
+.links {
+	animation: slideFromTop 2s ease;
+}
+.grid-img-container {
+	animation: slideFromLeft 1s ease 2s;
+}
+.large-img-container {
+	animation: slideFromRight 1s ease 3s;
+}
+.stock-container {
+}
+
+@keyframes slideFromLeft {
+	0% {
+		opacity: 0;
+		tranform: translateX(-1000px);
+	}
+	50% {
+		opacity: 0.5;
+		tranform: translateX(0);
+	}
+	100% {
+		opacity: ;
+		tranform: translateX(0);
+	}
+}
+
+@keyframes slideFromRight {
+	0% {
+		opacity: 0;
+		tranform: translateX(1000px);
+	}
+	50% {
+		opacity: 0.5;
+		tranform: translateX(0);
+	}
+	100% {
+		opacity: ;
+		tranform: translateX(0);
+	}
+}
+
+@keyframes slideFromTop {
+	0% {
+		opacity: 0;
+		tranform: translateY(1000px);
+	}
+	50% {
+		opacity: 0.5;
+		tranform: translateY(0);
+	}
+	100% {
+		opacity: ;
+		tranform: translateY(0);
+	}
+}
+
+/* ********************************* */
+/* STOCK CONTAINER */
+/* ********************************* */
+
+.stock-container {
+	/* display: flex; */
+	/* flex-direction: column; */
+	display: grid;
+	grid-column: 1/span 3;
+	/* grid-row: 4; */
+	/* background-color: mediumblue; */
+	grid-template-columns: repeat(5, 1fr);
+	height: 100%;
+	grid-gap: 1%;
+	grid-template-rows: repeat(3, 1fr);
+	margin: 4%;
+	margin-bottom: 15%;
+}
+
+/* ********************************************** */
+/* MEDIA QUERIES */
+/* ********************************************** */
+
+@media (max-width: 1050px) {
+	.container {
+		/* grid-template-rows: auto; */
+		grid-template-areas: "header header header header header header" "grid grid grid grid grid grid"
+			"large large large large large large" "stock stock stock stock stock stock";
+	}
+
+	.links {
+		grid-area: header;
+		font-size: medium;
+	}
+
+	.large-img-container,
+	.grid-img-container,
+	.stock-container {
+		/* display: block; */
+		/* grid-column: 1/span 6; */
+		border-bottom: 2px solid lightgray;
+		height: 100%;
+	}
+
+	.large-img-container {
+		/* grid-row: 8/span 6; */
+		grid-area: large;
+	}
+
+	.grid-img-container {
+		/* grid-row: 2/span 6; */
+		grid-area: grid;
+	}
+
+	.stock-container {
+		grid-area: stock;
+		grid-column: 1/span 6;
+	}
+
+	.large-img-container,
+	.stock-container {
+		margin-top: 10%;
+	}
+}
+
+@media (max-width: 550px) {
+	.grid-item > img {
+		width: 100px;
+		height: 100px;
+	}
+
+	.container {
+		font-size: small;
+	}
 }

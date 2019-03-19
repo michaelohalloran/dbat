@@ -1,0 +1,74 @@
+html,
+body {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+.auth-links {
+	list-style: none;
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	background-color: #2170ef;
+	color: white;
+	font-size: 1.4rem;
+	padding: 1%;
+	margin: 0;
+}
+
+.auth-links li {
+	margin: 1%;
+}
+
+.auth-links li:hover {
+	color: #2170ef;
+	background-color: white;
+	border: 1px solid white;
+	cursor: pointer;
+}
+
+/* ***************************** */
+/* FORM */
+/* ***************************** */
+
+.login-form {
+	border: 1px solid black;
+	display: flex;
+	flex-direction: column;
+	margin: 4%;
+	/* height: 64vh; */
+	justify-content: space-around;
+	align-items: center;
+	padding: 5%;
+}
+
+label {
+	margin: 1%;
+}
+
+.login-form input {
+	padding: 1%;
+	text-align: center;
+	margin: auto;
+	width: 80%;
+}
+
+.login-btn {
+	background-color: #2170ef;
+	color: white;
+	font-weight: bold;
+	border-radius: 3.5em;
+	/* padding: 1%; */
+	margin: 2%;
+	border: none;
+}
+
+.login-btn:hover {
+	cursor: pointer;
+	background-color: white;
+	color: #2170ef;
+	border: 1px solid black;
+	transform: scale(1.1);
+	transition: transform 1s ease;
+}

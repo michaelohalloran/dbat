@@ -1,0 +1,20 @@
+.dragzone {
+	background: lightseagreen;
+	border: 1px solid black;
+	height: 400px;
+	width: 70%;
+	margin: 2%;
+}
+
+img {
+	width: 200px;
+	height: 200px;
+}
+
+.dropzone {
+	background: lightcoral;
+	border: 1px solid black;
+	height: 400px;
+	width: 70%;
+	margin: 2%;
+}

@@ -1,0 +1,92 @@
+body,
+html {
+	padding: 0;
+	margin: 0;
+	position: relative;
+	background: salmon;
+	height: 100%;
+}
+
+#root {
+	height: 100%;
+}
+
+.empty {
+	background: lightblue;
+	height: 200px;
+	border: 1px solid black;
+	flex: 1;
+	margin: 1%;
+}
+
+.hovered {
+	background: #f4f4f4;
+	border-style: dashed;
+}
+
+.container {
+	display: flex;
+	border: 1px solid black;
+	justify-content: center;
+	margin: 2%;
+	height: 100%;
+}
+/* ************************ */
+/* ************************ */
+/* ************************ */
+/* ************************ */
+.drag-container {
+	text-align: center;
+	margin: 5%;
+	border: 1px solid lightblue;
+	padding: 4%;
+	position: relative;
+}
+
+.drag-text {
+	margin: 2% auto;
+	border: 5px solid black;
+	width: max-content;
+	cursor: pointer;
+	position: relative;
+}
+
+.hold {
+	border: 4px solid #ccc;
+}
+
+.invisible {
+	display: none;
+}
+
+.img-drop {
+	/* position: relative; */
+}
+
+.dropped-text {
+	background: red;
+	position: absolute;
+}
+
+/* ************************** */
+
+/* .dragzone {
+	background: lightseagreen;
+	border: 1px solid black;
+	height: 400px;
+	width: 70%;
+	margin: 2%;
+} */
+
+img {
+	width: 200px;
+	height: 200px;
+}
+
+/* .dropzone {
+	background: lightcoral;
+	border: 1px solid black;
+	height: 400px;
+	width: 70%;
+	margin: 2%;
+} */
