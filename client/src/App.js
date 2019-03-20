@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "./App.css";
 import axios from "axios";
 import Stock from "./Stock";
+import { API_BASE_URL } from "./config/config";
 
 class App extends Component {
 	constructor() {
@@ -25,7 +26,7 @@ class App extends Component {
 
 	// https://medium.com/quick-code/how-to-quickly-generate-a-random-gallery-of-images-from-an-unsplash-collection-in-javascript-4ddb2a6a4faf
 	//collection ids: https://unsplash.com/collections
-	loadImages = () => {
+	loadImages = async () => {
 		// let imgs = Array(9).fill(0).map((item) => {
 		// 	axios.get('http://www.splashbase.co/api/v1/images/random').then((res) => {
 		// 		item = {
@@ -43,16 +44,30 @@ class App extends Component {
 		// 	// () => this.setDefaultLargeImg()
 		// );
 
-		let imgs = Array(9).fill(0).map((item) => {
-			axios.get("http://www.splashbase.co/api/v1/images/random").then((res) => {
-				item = {
-					id: res.data.id,
-					url: res.data.url,
-					selected: false
-				};
-				// do this inside following setState?: () => this.setDefaultLargeImg();
-				this.setState({ imgs: [ ...this.state.imgs, item ] });
+		// let imgs = Array(9).fill(0).map((item) => {
+		// 	axios.get("http://www.splashbase.co/api/v1/images/random").then((res) => {
+		// 		item = {
+		// 			id: res.data.id,
+		// 			url: res.data.url,
+		// 			selected: false
+		// 		};
+		// 		// do this inside following setState?: () => this.setDefaultLargeImg();
+		// 		this.setState({ imgs: [ ...this.state.imgs, item ] });
+		// 	});
+		// });
+
+		let response = await axios.get(`${API_BASE_URL}/images`);
+		let imgsArr = response.data.reduce((imgs, nextImgObj) => {
+			imgs.push({
+				id: nextImgObj._id,
+				url: nextImgObj.image,
+				selected: false
 			});
+			return imgs;
+		}, []);
+
+		this.setState({
+			imgs: [ ...imgsArr ]
 		});
 	};
 
@@ -134,9 +149,9 @@ class App extends Component {
 
 	handleUpload = (e) => {
 		e.preventDefault();
-		console.log(e.target.files[0]);
-		let reader = new FileReader();
-		let file = e.target.files[0];
+		console.log("E.target.files:", e.target.files[0]);
+		const reader = new FileReader();
+		const file = e.target.files[0];
 		reader.onloadend = () => {
 			this.setState({
 				uploadedFile: file,
@@ -149,14 +164,16 @@ class App extends Component {
 
 	onUpload = (e) => {
 		e.preventDefault();
-		console.log("file: ", this.state.uploadedFile, this.state.uploadUrl);
+		console.log("updloaded file, updloadUrl: ", this.state.uploadedFile, this.state.uploadUrl);
 
 		//BACKEND METHOD:
 		//axios request to Firebase or MongoDB
-		// const fd = new FormData();
-		// fd.append('image', this.state.uploadedFile, this.state.uploadedFile.name);
-		// axios.post(`${URLGOESHERE}`, fd)
-		//   .then(res => console.log('FB response: ', res));
+		const fd = new FormData();
+		fd.append("image", this.state.uploadedFile, this.state.uploadedFile.name);
+		axios.post(`${API_BASE_URL}/images`, fd).then((res) => console.log("DB response: ", res));
+
+		//fetch images from DB
+		this.loadImages();
 	};
 
 	render() {

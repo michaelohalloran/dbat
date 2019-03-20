@@ -4,7 +4,31 @@ const app = express();
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+const path = require("path");
+
+//make image uploads folder accessible publicly
+app.use("/uploads", express.static("uploads"));
+
 const multer = require("multer");
+const storage = multer.diskStorage({
+	destination: function(req, file, cb) {
+		cb(null, "./uploads/");
+	},
+	filename: function(req, file, cb) {
+		cb(null, file.originalname);
+	}
+});
+
+const fileFilter = (req, file, cb) => {
+	const isAcceptedImageType = [ "image/jpeg", "image/png", "image/jpg", "image/svg" ].includes(file.mimetype);
+	if (isAcceptedImageType) {
+		cb(null, true);
+	} else {
+		cb(null, false);
+	}
+};
+const upload = multer({ storage, fileFilter });
+
 const db = require("./config/keys").mongoURI;
 const Image = require("./models/Image");
 
@@ -30,38 +54,38 @@ app.get("/", (req, res) => {
 // @route POST /images
 //desc: Post new image
 //@access Private
-app.post("/images", (req, res) => {
-	res.send("POST images route");
+app.post("/images", upload.single("image"), async (req, res) => {
+	// res.send("POST images route");
+
+	console.log("incoming POST req.file: ", req.file);
 	// //add image
-	// try {
-	//     const newImg = new Image({
-	// image: req.body
-	// });
-	//     await newImg.save();
-	//      return res.status(201).send(newImg);
-	// }
-	// catch(e) {
-	//     return res.status(500).send('Cannot post error: ', e);
-	// }
+	try {
+		const newImg = new Image({
+			image: req.file.path
+		});
+		const savedImg = await newImg.save();
+		return res.status(201).send(savedImg);
+	} catch (e) {
+		return res.status(400).send("Cannot post image: ", e);
+	}
 });
 
 // @route GET /images
 //desc: Get all images
 //@access Private
 app.get("/images", async (req, res) => {
-	res.send("Images GET route");
+	// res.send("Images GET route");
 
 	// //retrieve images
-	// try {
-	//     const imgs = await Image.find({});
-	//     if (!imgs) {
-	//         return res.status(400).json({message: 'Images not found'});
-	//     }
-	//     return res.status(200).send(imgs);
-	// }
-	// catch(e) {
-	//     res.status(500).send(e);
-	// }
+	try {
+		const imgs = await Image.find();
+		if (!imgs) {
+			return res.status(400).json({ message: "Images not found" });
+		}
+		return res.status(200).send(imgs);
+	} catch (e) {
+		res.status(500).send(e);
+	}
 });
 
 // **********************************
