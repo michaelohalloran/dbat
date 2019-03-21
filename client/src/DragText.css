@@ -2,7 +2,7 @@ body,
 html {
 	padding: 0;
 	margin: 0;
-	position: relative;
+	/* position: relative; */
 	background: salmon;
 	height: 100%;
 }
@@ -17,6 +17,7 @@ html {
 	border: 1px solid black;
 	flex: 1;
 	margin: 1%;
+	position: relative;
 }
 
 .hovered {
@@ -40,7 +41,7 @@ html {
 	margin: 5%;
 	border: 1px solid lightblue;
 	padding: 4%;
-	position: relative;
+	/* position: relative; */
 }
 
 .drag-text {
@@ -48,7 +49,8 @@ html {
 	border: 5px solid black;
 	width: max-content;
 	cursor: pointer;
-	position: relative;
+	position: absolute;
+	/* position: relative; */
 }
 
 .hold {
