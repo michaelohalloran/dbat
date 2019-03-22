@@ -7,12 +7,16 @@ export default class DragText extends Component {
 		super();
 		this.state = {
 			text: "",
-			droppedText: "",
+			// droppedText: "",
 			startedDrag: false,
 			makeInvisible: false,
 			hovering: false,
-			textX: null,
-			textY: null
+			clientX: null,
+			clientY: null,
+			pageX: null,
+			pageY: null,
+			screenX: null,
+			screenY: null
 		};
 
 		this.textRef = React.createRef();
@@ -26,16 +30,17 @@ export default class DragText extends Component {
 
 	// https://developer.mozilla.org/en-US/docs/Web/CSS/CSSOM_View/Coordinate_systems#Example
 	onDrag = (e, text) => {
-		console.log("onDrag clientX/Y", e.clientX, e.clientY);
-		console.log("onDrag screenX/Y", e.screenX, e.screenY);
+		// console.log("window, document: ", window, document);
+		// console.log(e.target.style);
+		// console.log("onDrag clientX/Y", e.clientX, e.clientY);
+		// console.log("onDrag screenX/Y", e.screenX, e.screenY);
 		// console.log("onDrag movementX/Y", e.movementX, e.movementY); //difference btwn last mouse movement and next
-		console.log("onDrag pageX/Y", e.pageX, e.pageY);
-
+		// console.log("onDrag pageX/Y", e.pageX, e.pageY);
 		// console.log("regular onDrag evt: ", e, text);
-		this.setState({
-			textX: e.clientX,
-			textY: e.clientY
-		});
+		// this.setState({
+		// 	clientX: e.clientX,
+		// 	clientY: e.clientY
+		// });
 	};
 
 	onDragStart = (e) => {
@@ -54,16 +59,16 @@ export default class DragText extends Component {
 	};
 
 	onDragEnd = (e) => {
-		console.log("dragEnd evt: ", e);
-		console.log("dragEnd offset: ", e.target.style);
-		const x = e.clientX;
-		const y = e.clientY;
-		console.log("textRef styles: ", this.textRef.style);
+		// console.log("dragEnd evt: ", e);
 		this.setState({
 			startedDrag: false,
 			makeInvisible: false,
-			textX: e.clientX,
-			textY: e.clientY
+			clientX: e.clientX,
+			clientY: e.clientY,
+			screenX: e.screenX,
+			screenY: e.screenY,
+			pageX: e.pageX,
+			pageY: e.pageY
 		});
 	};
 
@@ -84,28 +89,40 @@ export default class DragText extends Component {
 	};
 
 	onDrop = (e) => {
-		console.log("drop evt: ", e);
+		// console.log("drop evt: ", e);
 		let typed = e.dataTransfer.getData("text");
-		console.log("typed");
+		// console.log("typed");
 		this.setState({
-			droppedText: typed,
+			// droppedText: typed,
 			hovering: false
+			// clientX: e.clientX,
+			// clientY: e.clientY,
+			// screenX: e.screenX,
+			// screenY: e.screenY,
+			// pageX: e.pageX,
+			// pageY: e.pageY
 		});
 	};
 
 	render() {
-		const styles = {
-			// clientX: this.state.textX,
-			// clientY: this.state.textY,
-			// position: "absolute",
-			top: `${this.state.textY}px`,
-			left: `${this.state.textX}px`
-		};
+		// const styles = {
+		// 	// clientX: this.state.clientX,
+		// 	// clientY: this.state.clientY,
+		// 	// position: "absolute",
+		// 	top: `${this.state.clientY}px`,
+		// 	left: `${this.state.clientX}px`
+		// };
 
 		return (
 			<div className="drag-container">
 				<h6>
-					currentX: {this.state.textX}, currentY: {this.state.textY}
+					clientX: {this.state.clientX}, clientY: {this.state.clientY}
+				</h6>
+				<h6>
+					screenX: {this.state.screenX}, screenY: {this.state.screenY}
+				</h6>
+				<h6>
+					pageX: {this.state.pageX}, pageY: {this.state.pageY}
 				</h6>
 				<img
 					className="img-drop"
@@ -116,8 +133,8 @@ export default class DragText extends Component {
 					src="https://upload.wikimedia.org/wikipedia/commons/4/4d/Batian_Nelion_and_pt_Slade_in_the_foreground_Mt_Kenya.JPG"
 				/>
 
-				<h5>Dropped text:</h5>
-				<p className="dropped-text">{this.state.droppedText}</p>
+				{/* <h5>Dropped text:</h5>
+				<p className="dropped-text">{this.state.droppedText}</p> */}
 
 				<br />
 
@@ -129,7 +146,7 @@ export default class DragText extends Component {
 						? "invisible"
 						: ""}`}
 					ref={this.textRef}
-					style={{ top: `${this.state.textY}px`, left: `${this.state.textX}px`, zIndex: "100" }}
+					style={{ top: `${this.state.clientY}px`, left: `${this.state.clientX}px`, zIndex: "100" }}
 					onDrag={(e) => this.onDrag(e, e.target.innerHTML)}
 					onDragStart={(e) => this.onDragStart(e)}
 					onDragEnd={(e) => this.onDragEnd(e)}
@@ -139,11 +156,10 @@ export default class DragText extends Component {
 
 				<input type="text" name="text" onChange={this.onChange} value={this.state.text} />
 
-				<div className="container">
+				<div className="large-drag-container">
 					<div
 						className={`empty ${this.state.hovering ? "hovered" : ""}`}
 						onDragEnter={(e) => this.onDragEnter(e)}
-						onDragLeave={(e) => this.onDragLeave(e)}
 						onDragLeave={(e) => this.onDragLeave(e)}
 						onDrop={(e) => this.onDrop(e)}
 					/>
@@ -151,20 +167,17 @@ export default class DragText extends Component {
 						className={`empty ${this.state.hovering ? "hovered" : ""}`}
 						onDragEnter={(e) => this.onDragEnter(e)}
 						onDragLeave={(e) => this.onDragLeave(e)}
-						onDragLeave={(e) => this.onDragLeave(e)}
 						onDrop={(e) => this.onDrop(e)}
 					/>
 					<div
 						className={`empty ${this.state.hovering ? "hovered" : ""}`}
 						onDragEnter={(e) => this.onDragEnter(e)}
 						onDragLeave={(e) => this.onDragLeave(e)}
-						onDragLeave={(e) => this.onDragLeave(e)}
 						onDrop={(e) => this.onDrop(e)}
 					/>
 					<div
 						className={`empty ${this.state.hovering ? "hovered" : ""}`}
 						onDragEnter={(e) => this.onDragEnter(e)}
-						onDragLeave={(e) => this.onDragLeave(e)}
 						onDragLeave={(e) => this.onDragLeave(e)}
 						onDrop={(e) => this.onDrop(e)}
 					/>

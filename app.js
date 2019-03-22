@@ -3,8 +3,10 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const bodyParser = require("body-parser");
+const pdf = require("html-pdf");
 const mongoose = require("mongoose");
 const path = require("path");
+const pdfTemplate = require("./documents/index");
 
 //make image uploads folder accessible publicly
 app.use("/uploads", express.static("uploads"));
@@ -33,6 +35,7 @@ const db = require("./config/keys").mongoURI;
 const Image = require("./models/Image");
 
 app.use(cors());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 const PORT = process.env.PORT || 5000;
@@ -85,6 +88,33 @@ app.get("/images", async (req, res) => {
 		return res.status(200).send(imgs);
 	} catch (e) {
 		res.status(500).send(e);
+	}
+});
+
+// ********************************
+// PDF ROUTES
+// ********************************
+app.post("/pdf", (req, res) => {
+	try {
+		pdf.create(pdfTemplate(req.body), {}).toFile("result.pdf", (err) => {
+			if (err) {
+				// res.status(500).json({ errorMsg: err });
+				res.send(Promise.reject());
+			}
+			console.log("post req.body, res data: ", req.body, res.data);
+			res.status(201).send(Promise.resolve());
+			//add to DB: Pdf.save().then etc.
+		});
+	} catch (e) {
+		res.status(500).json({ postPdf: e });
+	}
+});
+
+app.get("/pdf", (req, res) => {
+	try {
+		res.sendFile(`${__dirname}/result.pdf`);
+	} catch (e) {
+		res.status(400).json({ getPdf: e });
 	}
 });
 

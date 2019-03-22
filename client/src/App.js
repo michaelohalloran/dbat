@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "./App.css";
 import axios from "axios";
+import { saveAs } from "file-saver";
 import Stock from "./Stock";
 import { API_BASE_URL } from "./config/config";
 
@@ -17,45 +18,13 @@ class App extends Component {
 			singleImg: "",
 			uploadedFile: "",
 			uploadUrl: ""
-			// testImg2: ''
 		};
 
 		this.spanRef = React.createRef();
 		this.spanContainer = React.createRef();
 	}
 
-	// https://medium.com/quick-code/how-to-quickly-generate-a-random-gallery-of-images-from-an-unsplash-collection-in-javascript-4ddb2a6a4faf
-	//collection ids: https://unsplash.com/collections
 	loadImages = async () => {
-		// let imgs = Array(9).fill(0).map((item) => {
-		// 	axios.get('http://www.splashbase.co/api/v1/images/random').then((res) => {
-		// 		item = {
-		// 			id: res.data.id,
-		// 			url: res.data.url,
-		// 			selected: false
-		// 		};
-		// 		return item;
-		// 	});
-		// });
-		// this.setState(
-		// 	{
-		// 		imgs: [ ...this.state.imgs, imgs ]
-		// 	}
-		// 	// () => this.setDefaultLargeImg()
-		// );
-
-		// let imgs = Array(9).fill(0).map((item) => {
-		// 	axios.get("http://www.splashbase.co/api/v1/images/random").then((res) => {
-		// 		item = {
-		// 			id: res.data.id,
-		// 			url: res.data.url,
-		// 			selected: false
-		// 		};
-		// 		// do this inside following setState?: () => this.setDefaultLargeImg();
-		// 		this.setState({ imgs: [ ...this.state.imgs, item ] });
-		// 	});
-		// });
-
 		let response = await axios.get(`${API_BASE_URL}/images`);
 		let imgsArr = response.data.reduce((imgs, nextImgObj) => {
 			imgs.push({
@@ -71,30 +40,9 @@ class App extends Component {
 		});
 	};
 
-	// testImg = () => {
-	//   console.log('hit testImg');
-	//   axios.get('https://source.unsplash.com/random/150x150')
-	//     .then(res => this.setState({singleImg: res.request.responseUrl}))
-	//     console.log(this.state.singleImg);
-	//     // .then(()=> this.setState({
-	//     //     imgs: [...this.state.imgs, this.state.singleImg]
-	//     // })
-
-	//     // .then(res => console.log(res.request.responseUrl));
-	//   }
-
-	// testImg2 = () => {
-	//   axios.get('http://www.splashbase.co/api/v1/images/random')
-	//     .then(res => this.setState({
-	//       testImg2: res.data.url,
-	//     }));
-	// }
-
 	componentDidMount() {
 		//make API call, load images, also set default (as callback to loadImages, after setting state)
 		this.loadImages();
-		// this.testImg();
-		// this.testImg2();
 	}
 
 	setDefaultLargeImg = () => {
@@ -164,16 +112,44 @@ class App extends Component {
 
 	onUpload = (e) => {
 		e.preventDefault();
-		console.log("updloaded file, updloadUrl: ", this.state.uploadedFile, this.state.uploadUrl);
+		// console.log("updloaded file, updloadUrl: ", this.state.uploadedFile, this.state.uploadUrl);
 
-		//BACKEND METHOD:
-		//axios request to Firebase or MongoDB
 		const fd = new FormData();
 		fd.append("image", this.state.uploadedFile, this.state.uploadedFile.name);
-		axios.post(`${API_BASE_URL}/images`, fd).then((res) => console.log("DB response: ", res));
+		axios.post(`${API_BASE_URL}/images`, fd).then((res) => {
+			console.log("DB response: ", res);
+			//fetch images from DB
+			this.loadImages();
+		});
+	};
 
-		//fetch images from DB
-		this.loadImages();
+	generatePdf = () => {
+		axios
+			.post(
+				`${API_BASE_URL}/pdf`,
+				{ imgUrl: "test2" },
+				{
+					headers: {
+						"Content-Type": "application/json",
+						Accept: "application/pdf"
+					},
+					responseType: "blob"
+				}
+			)
+			.then((res) => {
+				console.log("res1: ", res);
+				axios.get(`${API_BASE_URL}/pdf`, { responseType: "blob", headers: { Accept: "application/pdf" } });
+			})
+			.then((res) => {
+				console.log("res2: ", res);
+				const pdfBlob = new Blob([ res.data ], { type: "application/pdf" });
+				saveAs(pdfBlob, "newPdf.pdf");
+			})
+			.catch((e) => {
+				console.log("client side get error: ", e);
+			});
+		//have some state that gets sent with this: image url and/or id to fetch from backend
+		//perhaps also the typed text, and maybe an object with top/left offset positions for html template in index.js
 	};
 
 	render() {
@@ -187,11 +163,6 @@ class App extends Component {
 				onClick={this.setImgPosition}
 			/>
 		) : null;
-
-		// const testImg = singleImg ? <img src={`${singleImg}`} alt="text"/> : <h3>Loading...</h3>;
-		// const testImg = <img src={'https://source.unsplash.com/random/150x150'} alt="text"/>;
-		// const testImg2 = <img src={this.state.testImg2} alt="testImg2"/>;
-		// const testImg = uploadUrl ? <img onClick={this.setSelectedImg} src={uploadUrl} alt="img"/> : <h6>Pick an image</h6>;
 
 		const userText = (
 			<span ref={this.spanRef} className="typed-text">
@@ -227,10 +198,6 @@ class App extends Component {
 					{display}
 				</div>
 
-				{/* {testImg2} */}
-
-				{/* <hr /> */}
-
 				<div className="large-img-container">
 					<div ref={this.spanContainer} className="img-text-container">
 						<h3 className="header">Customize your template</h3>
@@ -251,7 +218,6 @@ class App extends Component {
 						<button disabled={!this.state.text} className="blue-btn">
 							Done
 						</button>
-						{/* {testImg} */}
 					</div>
 
 					<div className="upload-container">
@@ -263,13 +229,13 @@ class App extends Component {
 								Upload
 							</button>
 						</form>
-
-						{/* {testImg} */}
 					</div>
 
 					<div className="footer-btn-container">
 						<button className="footer-btn blue-btn">Cancel</button>
-						<button className="print-btn">Print</button>
+						<button className="print-btn" onClick={this.generatePdf}>
+							Create and download PDF/Print
+						</button>
 						<button className="footer-btn blue-btn">Save</button>
 					</div>
 				</div>

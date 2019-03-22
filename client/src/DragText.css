@@ -1,11 +1,11 @@
-body,
+/* body,
 html {
 	padding: 0;
 	margin: 0;
-	/* position: relative; */
+	position: relative;
 	background: salmon;
 	height: 100%;
-}
+} */
 
 #root {
 	height: 100%;
@@ -17,7 +17,7 @@ html {
 	border: 1px solid black;
 	flex: 1;
 	margin: 1%;
-	position: relative;
+	/* position: relative; */
 }
 
 .hovered {
@@ -25,7 +25,7 @@ html {
 	border-style: dashed;
 }
 
-.container {
+.large-drag-container {
 	display: flex;
 	border: 1px solid black;
 	justify-content: center;
@@ -50,6 +50,7 @@ html {
 	width: max-content;
 	cursor: pointer;
 	position: absolute;
+	transform: translate(-50%, -50%);
 	/* position: relative; */
 }
 
