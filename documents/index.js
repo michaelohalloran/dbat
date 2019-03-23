@@ -1,15 +1,22 @@
-const path = require("path");
-const express = require("express");
-const app = express();
+// const path = require("path");
+// const express = require("express");
+// const app = express();
 
-app.use("/uploads", express.static("uploads"));
+// app.use("/uploads", express.static("uploads"));
 // app.use("/public", express.static(path.join(__dirname, 'public')));
 
-module.exports = ({ imgUrl, top, left, text }, dirName) => {
+module.exports = ({ imgUrl, top, left, text }, options = "default") => {
 	console.log("module img, top, left, text: ", imgUrl, top, left, text);
+	const relativePath = imgUrl.replace("\\", "/");
+	console.log("options if passed: ", options);
 	// const imgPath = "../uploads/genesee.jpg";
-	const imgPath = `${dirName}\\uploads/genesee.jpg`;
-	console.log("dirname, passed dirname imagePath, ", __dirname, dirName, imgPath);
+	// const imgPath = `${dirName}\\uploads/genesee.jpg`;
+	// const imgPath = "file:///genesee.jpg";
+	const imgPath = `file:///C:/Users/kipsa/Desktop/dbat/uploads/genesee.jpg`;
+	const imgPath2 = `file:///C:/Users/kipsa/Desktop/dbat/${relativePath}`;
+	console.log("dirname, imagePath, ", __dirname, imgPath);
+	console.log("imgPath 2:", imgPath2);
+	console.log("equal? ", imgPath === imgPath2); // slash is wrong direction on path2
 
 	return `
         <!doctype html>
@@ -25,15 +32,10 @@ module.exports = ({ imgUrl, top, left, text }, dirName) => {
                         background-color: red;
                         margin: 0;
                         padding: 0;
-                        background-image: url(${imgPath});
+                        background-image: url(${imgPath2});
                         background-repeat: no-repeat;
                         background-size: cover;
                         background-position: center;
-                    }
-
-                    img {
-                        height: 200px,
-                        width: 200px;
                     }
 
                     .text {
@@ -52,10 +54,6 @@ module.exports = ({ imgUrl, top, left, text }, dirName) => {
             
             <body>
                 <p class="text">${text}</p>
-                <img src=${imgPath} alt=${imgPath}/>
-                <img src="/genesee.jpg" alt="some text"/>
-                <img src="genesee.jpg" alt="some text2"/>
-                <img src="C:/Users/kipsa/Desktop/dbat/uploads/genesee.jpg" alt="some text3"/>
             </body>
         </html>
     `;

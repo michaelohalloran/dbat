@@ -96,10 +96,11 @@ app.get("/images", async (req, res) => {
 // ********************************
 app.post("/pdf", (req, res) => {
 	console.log(("req body", req.body));
-	const options = {
-		height: "10in",
-		width: "7in"
-	};
+	// const options = {
+	// 	// height: "10in",
+	// 	// width: "7in"
+	// 	// filename: "./uploads/genesee.jpg"
+	// };
 	try {
 		pdf.create(pdfTemplate(req.body, __dirname), {}).toFile("result.pdf", (err) => {
 			if (err) {
