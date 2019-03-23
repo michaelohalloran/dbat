@@ -17,11 +17,18 @@ class App extends Component {
 			textTop: "",
 			singleImg: "",
 			uploadedFile: "",
-			uploadUrl: ""
+			uploadUrl: "",
+			pdfObj: {
+				imgUrl: "",
+				top: "",
+				left: "",
+				text: ""
+			}
 		};
 
 		this.spanRef = React.createRef();
 		this.spanContainer = React.createRef();
+		this.imageRef = React.createRef();
 	}
 
 	loadImages = async () => {
@@ -58,16 +65,81 @@ class App extends Component {
 	};
 
 	setImgPosition = (e) => {
-		this.setState(
-			{
-				textLeft: `${e.pageX}px`,
-				textTop: `${e.pageY}px`
+		// this.setState(
+		// 	{
+		// 		textLeft: `${e.pageX}px`,
+		// 		textTop: `${e.pageY}px`
+		// 	},
+		// 	() => {
+		// 		this.spanRef.current.style.top = this.state.textTop;
+		// 		this.spanRef.current.style.left = this.state.textLeft;
+		// 	}
+		// );
+	};
+
+	onDragStart = (e) => {
+		// let typedText = e.target.textContent;
+		// e.dataTransfer.setData("text", typedText);
+		// this.setState({
+		// 	startedDrag: true
+		// });
+		// setTimeout(() => {
+		// 	this.setState({ makeInvisible: true });
+		// }, 0);
+	};
+
+	onDragEnd = (e) => {
+		// console.log("dragEnd evt: ", e);
+		const { text, selectedImg } = this.state;
+		console.log("state in dragEnd: ", this.state);
+		const screen = { x: e.screenX, y: e.screenY };
+		const client = { x: e.clientX, y: e.clientY };
+		const page = { x: e.pageX, y: e.pageY };
+		const coords = [
+			[ "screen", screen.x, screen.y ],
+			[ "client", client.x, client.y ],
+			[ "page", page.x, page.y ]
+		];
+		console.table(coords);
+		// console.log("imageRef style: ", this.imageRef.current.style);
+		// console.log("imageRef offset: ", this.imageRef.current.style.offset);
+		// console.log("imageRef offset distance: ", this.imageRef.current.style.offsetDistance);
+		// console.log("imageRef object position: ", this.imageRef.current.style.objectPosition);
+		// console.log("imageRef style offsetPath: ", this.imageRef.current.style.offsetPath);
+		// console.log(
+		// 	"imageRef style page, rx, ry: ",
+		// 	this.imageRef.current.style.page,
+		// 	this.imageRef.current.style.rx,
+		// 	this.imageRef.current.style.ry
+		// );
+		// console.log("imageRef style top, left: ", this.imageRef.current.style.top, this.imageRef.current.style.left);
+		// console.log(
+		// 	"imageRef style bottom, right: ",
+		// 	this.imageRef.current.style.bottom,
+		// 	this.imageRef.current.style.right
+		// );
+		// console.log("imageRef style x, y: ", this.imageRef.current.style.x, this.imageRef.current.style.y);
+		// console.log(
+		// 	"imageRef style page, cursor, cx, cy: ",
+		// 	this.imageRef.current.style.cursor,
+		// 	this.imageRef.current.style.cx,
+		// 	this.imageRef.current.style.cy
+		// );
+
+		//********* */ currently image is 500px too far to left, top height is correct
+		//find imageRef's position using pageX, make them work relative to each other
+		this.setState({
+			// startedDrag: false,
+			// makeInvisible: false,
+			pdfObj: {
+				top: e.clientY,
+				left: e.clientX,
+				text,
+				imgUrl: selectedImg.url
 			},
-			() => {
-				this.spanRef.current.style.top = this.state.textTop;
-				this.spanRef.current.style.left = this.state.textLeft;
-			}
-		);
+			textLeft: `${e.pageX}px`,
+			textTop: `${e.pageY}px`
+		});
 	};
 
 	toggleSelected = (image) => {
@@ -125,18 +197,17 @@ class App extends Component {
 
 	generatePdf = () => {
 		console.log("hit generate PDF");
+
+		//NOTE: 0,0 (top left of image) now gets passed through as roughly 150T, 652L
+		//search calculate offset one element relative to another css
 		axios
-			.post(
-				`${API_BASE_URL}/pdf`,
-				{ imgUrl: "test2" },
-				{
-					headers: {
-						"Content-Type": "application/json",
-						Accept: "application/pdf"
-					},
-					responseType: "blob"
-				}
-			)
+			.post(`${API_BASE_URL}/pdf`, this.state.pdfObj, {
+				headers: {
+					"Content-Type": "application/json",
+					Accept: "application/pdf"
+				},
+				responseType: "blob"
+			})
 			.then((res) => {
 				console.log("inside first then");
 				return axios.get(`${API_BASE_URL}/pdf`, {
@@ -157,10 +228,11 @@ class App extends Component {
 	};
 
 	render() {
-		const { imgs, selectedImg } = this.state;
+		const { imgs, selectedImg, pdfObj } = this.state;
 
 		const largeImg = selectedImg ? (
 			<img
+				ref={this.imageRef}
 				src={selectedImg.url}
 				style={{ width: "400px", height: "300px" }}
 				alt="text"
@@ -169,7 +241,14 @@ class App extends Component {
 		) : null;
 
 		const userText = (
-			<span ref={this.spanRef} className="typed-text">
+			<span
+				ref={this.spanRef}
+				className="typed-text"
+				draggable
+				style={{ top: `${pdfObj.top}px`, left: `${pdfObj.left}px` }}
+				onDragStart={(e) => this.onDragStart(e)}
+				onDragEnd={(e) => this.onDragEnd(e)}
+			>
 				{this.state.text}
 			</span>
 		);

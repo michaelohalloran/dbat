@@ -124,6 +124,7 @@ body {
 	color: white;
 	font-weight: bold;
 	font-family: Helvetica;
+	z-index: 100;
 	background-color: rgba(101, 84, 87, 0.6);
 }
 

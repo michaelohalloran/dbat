@@ -95,12 +95,13 @@ app.get("/images", async (req, res) => {
 // PDF ROUTES
 // ********************************
 app.post("/pdf", (req, res) => {
+	console.log(("req body", req.body));
 	const options = {
 		height: "10in",
 		width: "7in"
 	};
 	try {
-		pdf.create(pdfTemplate(req.body), {}).toFile("result.pdf", (err) => {
+		pdf.create(pdfTemplate(req.body, __dirname), {}).toFile("result.pdf", (err) => {
 			if (err) {
 				res.status(500).send(Promise.reject());
 			}
