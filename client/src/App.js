@@ -124,6 +124,7 @@ class App extends Component {
 	};
 
 	generatePdf = () => {
+		console.log("hit generate PDF");
 		axios
 			.post(
 				`${API_BASE_URL}/pdf`,
@@ -137,11 +138,14 @@ class App extends Component {
 				}
 			)
 			.then((res) => {
-				console.log("res1: ", res);
-				axios.get(`${API_BASE_URL}/pdf`, { responseType: "blob", headers: { Accept: "application/pdf" } });
+				console.log("inside first then");
+				return axios.get(`${API_BASE_URL}/pdf`, {
+					responseType: "blob",
+					headers: { Accept: "application/pdf" }
+				});
 			})
 			.then((res) => {
-				console.log("res2: ", res);
+				console.log("inside second then");
 				const pdfBlob = new Blob([ res.data ], { type: "application/pdf" });
 				saveAs(pdfBlob, "newPdf.pdf");
 			})

@@ -95,13 +95,15 @@ app.get("/images", async (req, res) => {
 // PDF ROUTES
 // ********************************
 app.post("/pdf", (req, res) => {
+	const options = {
+		height: "10in",
+		width: "7in"
+	};
 	try {
 		pdf.create(pdfTemplate(req.body), {}).toFile("result.pdf", (err) => {
 			if (err) {
-				// res.status(500).json({ errorMsg: err });
-				res.send(Promise.reject());
+				res.status(500).send(Promise.reject());
 			}
-			console.log("post req.body, res data: ", req.body, res.data);
 			res.status(201).send(Promise.resolve());
 			//add to DB: Pdf.save().then etc.
 		});
