@@ -4,6 +4,9 @@ import axios from "axios";
 import { saveAs } from "file-saver";
 import Stock from "./Stock";
 import { API_BASE_URL } from "./config/config";
+import PdfHandler from "./PdfHandler";
+import FontControls from "./InputControls";
+import InputControls from "./InputControls";
 
 class App extends Component {
 	constructor() {
@@ -11,6 +14,7 @@ class App extends Component {
 
 		this.state = {
 			imgs: [],
+			inputFields: [],
 			text: "",
 			selectedImg: null,
 			textLeft: "",
@@ -195,38 +199,6 @@ class App extends Component {
 		});
 	};
 
-	generatePdf = () => {
-		console.log("hit generate PDF");
-
-		//NOTE: 0,0 (top left of image) now gets passed through as roughly 150T, 652L
-		//search calculate offset one element relative to another css
-		axios
-			.post(`${API_BASE_URL}/pdf`, this.state.pdfObj, {
-				headers: {
-					"Content-Type": "application/json",
-					Accept: "application/pdf"
-				},
-				responseType: "blob"
-			})
-			.then((res) => {
-				console.log("inside first then");
-				return axios.get(`${API_BASE_URL}/pdf`, {
-					responseType: "blob",
-					headers: { Accept: "application/pdf" }
-				});
-			})
-			.then((res) => {
-				console.log("inside second then");
-				const pdfBlob = new Blob([ res.data ], { type: "application/pdf" });
-				saveAs(pdfBlob, "newPdf.pdf");
-			})
-			.catch((e) => {
-				console.log("client side get error: ", e);
-			});
-		//have some state that gets sent with this: image url and/or id to fetch from backend
-		//perhaps also the typed text, and maybe an object with top/left offset positions for html template in index.js
-	};
-
 	render() {
 		const { imgs, selectedImg, pdfObj } = this.state;
 
@@ -275,12 +247,10 @@ class App extends Component {
 					<li className="link-bold link2">Dbat</li>
 					<li>Hello Matt</li>
 				</ul>
-
 				<div className="grid-img-container">
 					<h3 className="header">Choose your template</h3>
 					{display}
 				</div>
-
 				<div className="large-img-container">
 					<div ref={this.spanContainer} className="img-text-container">
 						<h3 className="header">Customize your template</h3>
@@ -289,7 +259,7 @@ class App extends Component {
 						{userText}
 					</div>
 
-					<div className="input-container">
+					{/* <div className="input-container">
 						<label>Type your text</label>
 						<br />
 						<input
@@ -301,7 +271,8 @@ class App extends Component {
 						<button disabled={!this.state.text} className="blue-btn">
 							Done
 						</button>
-					</div>
+					</div> */}
+					<InputControls text={this.state.text} onInputChange={this.onInputChange} />
 
 					<div className="upload-container">
 						<form onSubmit={this.onUpload}>
@@ -314,15 +285,9 @@ class App extends Component {
 						</form>
 					</div>
 
-					<div className="footer-btn-container">
-						<button className="footer-btn blue-btn">Cancel</button>
-						<button className="print-btn" onClick={this.generatePdf}>
-							Create and download PDF/Print
-						</button>
-						<button className="footer-btn blue-btn">Save</button>
-					</div>
-				</div>
-
+					<PdfHandler pdfObj={this.state.pdfObj} />
+				</div>{" "}
+				{/* end of container */}
 				<Stock className="stock-container" />
 			</div>
 		);
