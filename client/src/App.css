@@ -126,15 +126,8 @@ body {
 	font-family: Helvetica;
 	z-index: 100;
 	background-color: rgba(101, 84, 87, 0.6);
-}
-
-.overlay-text {
-	color: white;
-	background: blueviolet;
-	position: absolute;
-	top: 50%;
-	left: 25%;
-	/* transform: translate(-50%, -50%); */
+	resize: both;
+	overflow: auto;
 }
 
 .input-container,

@@ -26,7 +26,10 @@ class App extends Component {
 				imgUrl: "",
 				top: "",
 				left: "",
-				text: ""
+				text: "",
+				fontSize: "",
+				color: "",
+				fontFamily: ""
 			}
 		};
 
@@ -171,6 +174,17 @@ class App extends Component {
 		this.setState({ [e.target.name]: e.target.value });
 	};
 
+	setInputField = (styleObject) => {
+		console.log("style object: ", styleObject);
+		this.setState({
+			pdfObj: {
+				color: styleObject.color,
+				fontSize: styleObject.size,
+				fontFamily: styleObject.font
+			}
+		});
+	};
+
 	handleUpload = (e) => {
 		e.preventDefault();
 		console.log("E.target.files:", e.target.files[0]);
@@ -212,12 +226,20 @@ class App extends Component {
 			/>
 		) : null;
 
+		const style = {
+			top: `${pdfObj.top}px`,
+			left: `${pdfObj.left}px`,
+			fontSize: `${pdfObj.fontSize}px`,
+			color: `${pdfObj.color}` || "black",
+			fontFamily: `${pdfObj.fontFamily}`
+		};
+
 		const userText = (
 			<span
 				ref={this.spanRef}
 				className="typed-text"
 				draggable
-				style={{ top: `${pdfObj.top}px`, left: `${pdfObj.left}px` }}
+				style={style}
 				onDragStart={(e) => this.onDragStart(e)}
 				onDragEnd={(e) => this.onDragEnd(e)}
 			>
@@ -272,7 +294,11 @@ class App extends Component {
 							Done
 						</button>
 					</div> */}
-					<InputControls text={this.state.text} onInputChange={this.onInputChange} />
+					<InputControls
+						text={this.state.text}
+						setInputField={this.setInputField}
+						onInputChange={this.onInputChange}
+					/>
 
 					<div className="upload-container">
 						<form onSubmit={this.onUpload}>

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./InputControls.css";
 
-const InputControls = ({ text, onInputChange }) => {
+const InputControls = ({ text, onInputChange, setInputField }) => {
 	const [ font, setFont ] = useState("");
 	const [ color, setColor ] = useState("");
 	const [ size, setSize ] = useState("");
@@ -30,12 +30,15 @@ const InputControls = ({ text, onInputChange }) => {
 		switch (e.target.name) {
 			case "color":
 				setColor(e.target.value);
+				setInputField({ color: e.target.value, size, font });
 				break;
 			case "font":
 				setFont(e.target.value);
+				setInputField({ color, size, font: e.target.value });
 				break;
 			case "size":
 				setSize(e.target.value);
+				setInputField({ color, size: e.target.value, font });
 				break;
 			default:
 				console.log("Error");
@@ -45,12 +48,24 @@ const InputControls = ({ text, onInputChange }) => {
 	const setFontStyles = () => {
 		//add btn disabled styling so it doesn't tempt usr click when no text
 
+		//set these as final styles for that input, then reset?
+
 		//call parent function here that puts font styles into an inputField object
 		//needs to include props.text as well
 		//styles = {color, font, size}
 		//this.props.setInputField(styles)
 		console.log("hit done");
-		console.log("state: ", color);
+		console.log("state: ", color, font, size);
+		// setInputField({
+		// 	color,
+		// 	font,
+		// 	size
+		// });
+		// return {
+		// 	color,
+		// 	font,
+		// 	size
+		// }
 	};
 
 	return (

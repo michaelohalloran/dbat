@@ -18,6 +18,8 @@ module.exports = ({ imgUrl, top, left, text }, options = "default") => {
 	console.log("imgPath 2:", imgPath2);
 	console.log("equal? ", imgPath === imgPath2); // slash is wrong direction on path2
 
+	//loop over textField objects, insert them below
+
 	return `
         <!doctype html>
         <html>
