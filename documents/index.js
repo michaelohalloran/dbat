@@ -1,4 +1,4 @@
-// const path = require("path");
+const path = require("path");
 // const express = require("express");
 // const app = express();
 
@@ -13,8 +13,14 @@ module.exports = ({ imgUrl, top, left, text }, options = "default") => {
 	// const imgPath = `${dirName}\\uploads/genesee.jpg`;
 	// const imgPath = "file:///genesee.jpg";
 	const imgPath = `file:///C:/Users/kipsa/Desktop/dbat/uploads/genesee.jpg`;
+
+	const dynamicPath = path.join(__dirname, "../", "uploads");
+	console.log("dynamic path: ", dynamicPath);
+
+	// const dynamicPath2 = __dirname.replace("\\", "/");
+	// const dynamicPath = `file:///${}`
 	const imgPath2 = `file:///C:/Users/kipsa/Desktop/dbat/${relativePath}`;
-	console.log("dirname, imagePath, ", __dirname, imgPath);
+	console.log("..dirname, dirname, imagePath, ", dirname, __dirname, imgPath);
 	console.log("imgPath 2:", imgPath2);
 	console.log("equal? ", imgPath === imgPath2); // slash is wrong direction on path2
 

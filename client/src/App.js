@@ -108,6 +108,15 @@ class App extends Component {
 			[ "page", page.x, page.y ]
 		];
 		console.table(coords);
+		console.log(
+			"spanContainer div left, top: ",
+			this.spanContainer.current.offsetLeft,
+			this.spanContainer.current.offsetTop
+		);
+		console.log("spanRef text left, top: ", this.spanRef.current.offsetLeft, this.spanRef.current.offsetTop);
+		console.log("imageRef left, top: ", this.imageRef.current.offsetLeft, this.imageRef.current.offsetTop);
+		console.log("clientX - offsetLeft: ", e.clientX - this.imageRef.current.offsetLeft);
+		console.log("clientY - offsetTop: ", e.clientY - this.imageRef.current.offsetTop);
 		// console.log("imageRef style: ", this.imageRef.current.style);
 		// console.log("imageRef offset: ", this.imageRef.current.style.offset);
 		// console.log("imageRef offset distance: ", this.imageRef.current.style.offsetDistance);
@@ -182,6 +191,12 @@ class App extends Component {
 				fontSize: styleObject.size,
 				fontFamily: styleObject.font
 			}
+		});
+	};
+
+	addInputObject = (newInput) => {
+		this.setState({
+			inputFields: [ ...this.state.inputFields, newInput ]
 		});
 	};
 
@@ -296,8 +311,9 @@ class App extends Component {
 					</div> */}
 					<InputControls
 						text={this.state.text}
-						setInputField={this.setInputField}
+						handleSetInputField={this.setInputField}
 						onInputChange={this.onInputChange}
+						handleAddInputObject={this.addInputObject}
 					/>
 
 					<div className="upload-container">

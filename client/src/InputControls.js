@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import "./InputControls.css";
 
-const InputControls = ({ text, onInputChange, setInputField }) => {
+const InputControls = ({ text, onInputChange, handleSetInputField, handleAddInputObject }) => {
+	// set defaults, but sync these below w/ e.target.value, etc.
 	const [ font, setFont ] = useState("");
-	const [ color, setColor ] = useState("");
-	const [ size, setSize ] = useState("");
+	const [ color, setColor ] = useState("white");
+	const [ size, setSize ] = useState("16px");
+	const [ error, setError ] = useState("");
 
 	const generateFontSizes = () => {
 		let options = [];
@@ -23,40 +25,65 @@ const InputControls = ({ text, onInputChange, setInputField }) => {
 	};
 
 	const handleChange = (e) => {
-		//may not work; look at making this dynamic
-		console.log("e name:", e.target.name);
-		console.log("e value:", e.target.value);
+		// console.log("e name:", e.target.name);
+		// console.log("e value:", e.target.value);
 
 		switch (e.target.name) {
 			case "color":
 				setColor(e.target.value);
-				setInputField({ color: e.target.value, size, font });
+				handleSetInputField({ color: e.target.value, size, font });
 				break;
 			case "font":
 				setFont(e.target.value);
-				setInputField({ color, size, font: e.target.value });
+				handleSetInputField({ color, size, font: e.target.value });
 				break;
 			case "size":
 				setSize(e.target.value);
-				setInputField({ color, size: e.target.value, font });
+				handleSetInputField({ color, size: e.target.value, font });
 				break;
 			default:
 				console.log("Error");
 		}
 	};
 
-	const setFontStyles = () => {
-		//add btn disabled styling so it doesn't tempt usr click when no text
+	const updateInputs = () => {
+		console.log("hit updateInputs");
 
+		// show error if user clicks done with no typed text
+		if (!text) {
+			console.log("no text entered");
+			setError("Please type some text");
+			console.log("text: ", text, "error: ", error);
+		}
+
+		if (text && error !== "") {
+			setError("");
+		}
+
+		// set finalized styles for the current input
+		setFontStyles();
+
+		// push this completed input *JUST THE VALUES, (e.g. text, styles, etc.) into the inputFields state array
+		// handleAddInputObject({font, color, size, text}})
+
+		// clear the input state and make a new empty one
+
+		// we never need more than one input; each time we click done the input gets cleared and is now usable by a new user typed text
+	};
+
+	const setFontStyles = () => {
+		//add btn disabled styling so it doesn't tempt user to click when no text
+
+		// text ?
 		//set these as final styles for that input, then reset?
 
 		//call parent function here that puts font styles into an inputField object
 		//needs to include props.text as well
 		//styles = {color, font, size}
-		//this.props.setInputField(styles)
+		//this.props.handleSetInputField(styles)
 		console.log("hit done");
-		console.log("state: ", color, font, size);
-		// setInputField({
+		console.log("state (color, font, size, text): ", color, font, size, text);
+		// handleSetInputField({
 		// 	color,
 		// 	font,
 		// 	size
@@ -67,6 +94,12 @@ const InputControls = ({ text, onInputChange, setInputField }) => {
 		// 	size
 		// }
 	};
+
+	// const showEmptyTextError = () => {
+	// 	if (!text) {
+	// 		setError("Please type some text");
+	// 	}
+	// }
 
 	return (
 		<div>
@@ -92,8 +125,12 @@ const InputControls = ({ text, onInputChange, setInputField }) => {
 					</select>
 				</div>
 
+				{/* give error if done is clicked with no text: */}
+
 				<input className="large-input" name="text" onChange={onInputChange} value={text} />
-				<button onClick={() => setFontStyles()} disabled={!text} className="blue-btn">
+				{error && <span>{error}</span>}
+				{/* <button onClick={() => updateInputs()} disabled={!text} className="blue-btn"> */}
+				<button onClick={() => updateInputs()} className="blue-btn">
 					Done
 				</button>
 			</div>
