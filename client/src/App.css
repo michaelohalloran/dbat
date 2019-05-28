@@ -10,115 +10,31 @@ body {
 	position: relative;
 }
 
-.container {
+.main-container {
 	display: grid;
 	grid-template-columns: repeat(6, 1fr);
-	/* grid-template-rows: auto repeat(14, 1fr); */
 }
-
-/* *************************************** */
-/* NAVBAR */
-/* *************************************** */
-
-.links {
-	grid-column: span 6;
-	/* grid-row: 1/2; */
-	background-color: #2170ef;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	list-style: none;
-	color: white;
-	font-size: 1.1rem;
-	margin: 0;
-	padding: 0; /*eliminate extra left space */
-}
-
-/* https://repl.it/@mike314151/Links-navbar-grid?language=html&folderId= */
-
-.links > li:nth-child(1) {
-	margin-right: auto;
-}
-
-.link-bold {
-	font-size: 1.2rem;
-	font-weight: bold;
-	text-transform: uppercase;
-}
-
-.links > li {
-	margin: 1%;
-}
-
-/* .nav-hr {
-    width: 1%;
-    color: gray;
-    height: 100%;
-} */
-
-/* *************************************** */
-/* LEFT SIDE */
-/* *************************************** */
-
-.grid-img-container {
-	/* display: flex; */
-	/* flex-wrap: wrap; */
-	/* width: 60%; */
-	grid-column: 1/span 3;
-	/* grid-row: 2/10; */
-	/* background: lightsalmon; */
-	margin: 5%;
-	display: grid;
-	grid-gap: 1%;
-	grid-template-columns: repeat(3, 1fr);
-}
-
-.header {
-	text-align: center;
-	grid-column: 1/-1;
-}
-
-.grid-item {
-	width: 31%;
-	margin: 1%;
-	height: auto; /*to match width, make it square */
-}
-
-.grid-item:hover {
-	transform: scale(1.1);
-	border: 1px solid black;
-	cursor: pointer;
-	transition: transform 1s ease;
-}
-
-/* hr {
-    width: 1px;
-    height: 100vh;
-} */
 
 /* *************************************** */
 /* RIGHT SIDE */
 /* *************************************** */
 
 .large-img-container {
-	/* width: 40%; */
-	grid-column: 4 / span 3;
-	grid-row: 2 / span 4;
-	/* background: lightgoldenrodyellow; */
+	grid-column: 3 / -1;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
 	align-items: center;
-	border-left: 1.5px solid lightgray;
 }
 
 .img-text-container {
-	/* position: relative; */
+	position: relative;
+	width: 90%;
 }
 
 .typed-text {
 	position: absolute;
-	left: 75%;
+	left: 50%;
 	top: 25%;
 	transform: translate(-50%, -50%);
 	color: white;
@@ -126,11 +42,9 @@ body {
 	font-family: Helvetica;
 	z-index: 100;
 	background-color: rgba(101, 84, 87, 0.6);
-	/* resize: both; */
 	overflow: auto;
 }
 
-.input-container,
 .upload-container {
 	display: flex;
 	flex-direction: column;
@@ -156,63 +70,44 @@ button {
 .blue-btn {
 	background-color: #2170ef;
 	color: white;
+}
+
+.blue-btn,
+.white-btn {
 	font-weight: bold;
 	border-radius: 3.5em;
 	/* padding: 1%; */
-	margin: 2%;
+	margin: 1%;
 	border: none;
 }
 
-.blue-btn:hover {
-	color: #2170ef;
-	background-color: white;
+.blue-btn:hover,
+.white-btn:hover {
 	cursor: pointer;
 	border: 1px solid black;
 	transform: scale(1.1);
 	transition: transform 1s;
 }
 
-.footer-btn-container {
-	display: flex;
-	justify-content: space-between;
-	width: 100%;
-}
-
-.footer-btn-container > button:nth-child(1) {
-	margin-right: auto;
-}
-
-.print-btn {
-	background-color: rgb(31, 151, 71);
-	color: white;
-	font-weight: bold;
-	border-radius: 3.5em;
-	/* padding: 1%; */
-	margin: 2%;
-	border: none;
-	/* width: 15%; */
-}
-
-.print-btn:hover {
-	color: rgb(31, 151, 71);
+.blue-btn:hover {
+	color: #2170ef;
 	background-color: white;
-	cursor: pointer;
+}
+
+.white-btn:hover {
+	color: #2170ef;
+	background-color: white;
 }
 
 /* ********************************* */
 /* ANIMATIONS */
 /* ********************************* */
 
-.links {
-	animation: slideFromTop 2s ease;
-}
 .grid-img-container {
 	animation: slideFromLeft 1s ease 2s;
 }
 .large-img-container {
 	animation: slideFromRight 1s ease 3s;
-}
-.stock-container {
 }
 
 @keyframes slideFromLeft {
@@ -260,25 +155,6 @@ button {
 	}
 }
 
-/* ********************************* */
-/* STOCK CONTAINER */
-/* ********************************* */
-
-.stock-container {
-	/* display: flex; */
-	/* flex-direction: column; */
-	display: grid;
-	grid-column: 1/span 3;
-	/* grid-row: 4; */
-	/* background-color: mediumblue; */
-	grid-template-columns: repeat(5, 1fr);
-	height: 100%;
-	grid-gap: 1%;
-	grid-template-rows: repeat(3, 1fr);
-	margin: 4%;
-	margin-bottom: 15%;
-}
-
 /* ********************************************** */
 /* MEDIA QUERIES */
 /* ********************************************** */
@@ -300,7 +176,7 @@ button {
 	.stock-container {
 		/* display: block; */
 		/* grid-column: 1/span 6; */
-		border-bottom: 2px solid lightgray;
+		/* border-bottom: 2px solid lightgray; */
 		height: 100%;
 	}
 

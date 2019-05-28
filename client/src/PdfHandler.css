@@ -1,0 +1,32 @@
+.pdf-btn-container {
+	display: flex;
+	background-color: gray;
+	grid-column: span 6;
+	justify-content: flex-end;
+	align-items: center;
+}
+
+.pdf-btn-container > button:nth-child(1) {
+	/* margin-right: auto; */
+}
+
+.print-msg {
+	/* color: white; */
+}
+
+/* .print-btn {
+	background-color: rgb(31, 151, 71);
+	color: white;
+	font-weight: bold;
+	border-radius: 3.5em; */
+/* padding: 1%; */
+/* margin: 2%;
+	border: none; */
+/* width: 15%; */
+/* } */
+
+/* .print-btn:hover {
+	color: rgb(31, 151, 71);
+	background-color: white;
+	cursor: pointer;
+} */

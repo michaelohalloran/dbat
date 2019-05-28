@@ -9,9 +9,26 @@
 	margin: 2%;
 } */
 
+/* ********************************* */
+/* STOCK CONTAINER */
+/* ********************************* */
+
+.stock-container {
+	display: flex;
+	flex-wrap: wrap;
+	/* flex-direction: column; */
+	/* display: grid; */
+	grid-column: 1/span 2;
+	/* grid-template-columns: repeat(5, 1fr); */
+	height: 100%;
+	/* grid-gap: 1%; */
+	/* grid-template-rows: repeat(3, 1fr); */
+	margin: 4%;
+}
+
 .stock-box {
 	background-color: gray;
 	border: 1px solid black;
-	margin: 3%;
-	/* width: 32%; */
+	margin: 2%;
+	width: 45%;
 }

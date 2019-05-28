@@ -2,13 +2,11 @@ import React from "react";
 import axios from "axios";
 import { API_BASE_URL } from "./config/config";
 import { saveAs } from "file-saver";
+import "./PdfHandler.css";
 
 const PdfHandler = ({ pdfObj }) => {
 	const generatePdf = () => {
 		console.log("hit generate PDF");
-
-		//NOTE: 0,0 (top left of image) now gets passed through as roughly 150T, 652L
-		//search calculate offset one element relative to another css
 		axios
 			.post(`${API_BASE_URL}/pdf`, pdfObj, {
 				headers: {
@@ -35,12 +33,11 @@ const PdfHandler = ({ pdfObj }) => {
 	};
 
 	return (
-		<div className="footer-btn-container">
-			<button className="footer-btn blue-btn">Cancel</button>
-			<button className="print-btn" onClick={generatePdf}>
-				Create and download PDF/Print
+		<div className="pdf-btn-container">
+			<span className="print-msg">Ready to print?</span>
+			<button className="blue-btn" onClick={generatePdf}>
+				Create PDF
 			</button>
-			<button className="footer-btn blue-btn">Save</button>
 		</div>
 	);
 };

@@ -1,0 +1,48 @@
+/* *************************************** */
+/* NAVBAR */
+/* *************************************** */
+
+.link-bar {
+	grid-column: span 6;
+	/* grid-row: 1/2; */
+	background-color: #2170ef;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	list-style: none;
+	color: white;
+	font-size: 1.1rem;
+	margin: 0;
+	padding: 0; /*eliminate extra left space */
+}
+
+/* https://repl.it/@mike314151/Links-navbar-grid?language=html&folderId= */
+
+/* .link-bar > li:nth-child(1) {
+	margin-right: auto;
+} */
+
+.link-bar > button:nth-child(1) {
+	margin-right: auto;
+}
+
+.link-bar > button:nth-child(2) {
+	margin-right: 5%;
+}
+
+.link-bold {
+	font-size: 1.2rem;
+	font-weight: bold;
+	text-transform: uppercase;
+}
+
+.link-bar > li {
+	margin: 1%;
+}
+
+@media (max-width: 1050px) {
+	.links {
+		grid-area: header;
+		font-size: medium;
+	}
+}

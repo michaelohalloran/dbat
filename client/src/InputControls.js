@@ -102,38 +102,36 @@ const InputControls = ({ text, onInputChange, handleSetInputField, handleAddInpu
 	// }
 
 	return (
-		<div>
-			<div className="input-container">
-				<label>Type your text</label>
-				<br />
+		<div className="input-container">
+			<label>Enter text</label>
+			<br />
 
-				<div className="font-controls">
-					<select value={color ? color : "Color"} onChange={handleChange} name="color" id="color">
-						<option value="black">Black</option>
-						<option value="red">Red</option>
-						<option value="yellow">Yellow</option>
-						<option value="white">White</option>
-					</select>
+			<div className="font-controls">
+				<select value={color ? color : "Color"} onChange={handleChange} name="color" id="color">
+					<option value="black">Black</option>
+					<option value="red">Red</option>
+					<option value="yellow">Yellow</option>
+					<option value="white">White</option>
+				</select>
 
-					<select value={font ? font : "Font"} onChange={handleChange} name="font" id="font">
-						<option value="Helvetica">Helvetica</option>
-						<option value="Georgia">Georgia</option>
-					</select>
+				<select value={font ? font : "Font"} onChange={handleChange} name="font" id="font">
+					<option value="Helvetica">Helvetica</option>
+					<option value="Georgia">Georgia</option>
+				</select>
 
-					<select value={size ? size : "Font Size"} onChange={handleChange} name="size" id="size">
-						{generateFontSizes()}
-					</select>
-				</div>
-
-				{/* give error if done is clicked with no text: */}
-
-				<input className="large-input" name="text" onChange={onInputChange} value={text} />
-				{error && <span>{error}</span>}
-				{/* <button onClick={() => updateInputs()} disabled={!text} className="blue-btn"> */}
-				<button onClick={() => updateInputs()} className="blue-btn">
-					Done
-				</button>
+				<select value={size ? size : "Font Size"} onChange={handleChange} name="size" id="size">
+					{generateFontSizes()}
+				</select>
 			</div>
+
+			{/* give error if done is clicked with no text: */}
+
+			<input className="large-input" name="text" onChange={onInputChange} value={text} />
+			{error && <span>{error}</span>}
+			{/* <button onClick={() => updateInputs()} disabled={!text} className="blue-btn"> */}
+			<button onClick={() => updateInputs()} className="blue-btn">
+				Add text
+			</button>
 		</div>
 	);
 };

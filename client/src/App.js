@@ -1,18 +1,23 @@
 import React, { Component } from "react";
 import "./App.css";
 import axios from "axios";
-import { saveAs } from "file-saver";
 import Stock from "./Stock";
 import { API_BASE_URL } from "./config/config";
 import PdfHandler from "./PdfHandler";
-import FontControls from "./InputControls";
+import Upload from "./Upload";
 import InputControls from "./InputControls";
+import Navbar from "./Navbar";
+import GridImg from "./GridImg";
+import Sidebar from "./Sidebar";
 
 class App extends Component {
 	constructor() {
 		super();
 
 		this.state = {
+			showTemplates: false,
+			showLogos: false,
+			showText: true,
 			imgs: [],
 			inputFields: [],
 			text: "",
@@ -49,9 +54,12 @@ class App extends Component {
 			return imgs;
 		}, []);
 
-		this.setState({
-			imgs: [ ...imgsArr ]
-		});
+		this.setState(
+			{
+				imgs: [ ...imgsArr ]
+			},
+			() => this.setDefaultLargeImg()
+		);
 	};
 
 	componentDidMount() {
@@ -67,32 +75,31 @@ class App extends Component {
 	};
 
 	setSelectedImg = (img) => {
-		// img.url = img.url.slice(0,-7) + '480x480';
 		this.setState({ selectedImg: img });
 	};
 
-	setImgPosition = (e) => {
-		// this.setState(
-		// 	{
-		// 		textLeft: `${e.pageX}px`,
-		// 		textTop: `${e.pageY}px`
-		// 	},
-		// 	() => {
-		// 		this.spanRef.current.style.top = this.state.textTop;
-		// 		this.spanRef.current.style.left = this.state.textLeft;
-		// 	}
-		// );
-	};
+	setSidebarDisplay = (e) => {
+		console.log(e.target.innerText);
 
-	onDragStart = (e) => {
-		// let typedText = e.target.textContent;
-		// e.dataTransfer.setData("text", typedText);
-		// this.setState({
-		// 	startedDrag: true
-		// });
-		// setTimeout(() => {
-		// 	this.setState({ makeInvisible: true });
-		// }, 0);
+		if (e.target.innerText === "Text") {
+			this.setState({
+				showText: true,
+				showLogos: false,
+				showTemplates: false
+			});
+		} else if (e.target.innerText === "Templates") {
+			this.setState({
+				showText: false,
+				showLogos: false,
+				showTemplates: true
+			});
+		} else if (e.target.innerText === "Graphics/Logos") {
+			this.setState({
+				showText: false,
+				showLogos: true,
+				showTemplates: false
+			});
+		}
 	};
 
 	onDragEnd = (e) => {
@@ -117,36 +124,7 @@ class App extends Component {
 		console.log("imageRef left, top: ", this.imageRef.current.offsetLeft, this.imageRef.current.offsetTop);
 		console.log("clientX - offsetLeft: ", e.clientX - this.imageRef.current.offsetLeft);
 		console.log("clientY - offsetTop: ", e.clientY - this.imageRef.current.offsetTop);
-		// console.log("imageRef style: ", this.imageRef.current.style);
-		// console.log("imageRef offset: ", this.imageRef.current.style.offset);
-		// console.log("imageRef offset distance: ", this.imageRef.current.style.offsetDistance);
-		// console.log("imageRef object position: ", this.imageRef.current.style.objectPosition);
-		// console.log("imageRef style offsetPath: ", this.imageRef.current.style.offsetPath);
-		// console.log(
-		// 	"imageRef style page, rx, ry: ",
-		// 	this.imageRef.current.style.page,
-		// 	this.imageRef.current.style.rx,
-		// 	this.imageRef.current.style.ry
-		// );
-		// console.log("imageRef style top, left: ", this.imageRef.current.style.top, this.imageRef.current.style.left);
-		// console.log(
-		// 	"imageRef style bottom, right: ",
-		// 	this.imageRef.current.style.bottom,
-		// 	this.imageRef.current.style.right
-		// );
-		// console.log("imageRef style x, y: ", this.imageRef.current.style.x, this.imageRef.current.style.y);
-		// console.log(
-		// 	"imageRef style page, cursor, cx, cy: ",
-		// 	this.imageRef.current.style.cursor,
-		// 	this.imageRef.current.style.cx,
-		// 	this.imageRef.current.style.cy
-		// );
-
-		//********* */ currently image is 500px too far to left, top height is correct
-		//find imageRef's position using pageX, make them work relative to each other
 		this.setState({
-			// startedDrag: false,
-			// makeInvisible: false,
 			pdfObj: {
 				top: e.clientY,
 				left: e.clientX,
@@ -217,8 +195,6 @@ class App extends Component {
 
 	onUpload = (e) => {
 		e.preventDefault();
-		// console.log("updloaded file, updloadUrl: ", this.state.uploadedFile, this.state.uploadUrl);
-
 		const fd = new FormData();
 		fd.append("image", this.state.uploadedFile, this.state.uploadedFile.name);
 		axios.post(`${API_BASE_URL}/images`, fd).then((res) => {
@@ -229,13 +205,13 @@ class App extends Component {
 	};
 
 	render() {
-		const { imgs, selectedImg, pdfObj } = this.state;
+		const { imgs, selectedImg, pdfObj, showLogos, showTemplates, showText } = this.state;
 
 		const largeImg = selectedImg ? (
 			<img
 				ref={this.imageRef}
 				src={selectedImg.url}
-				style={{ width: "400px", height: "300px" }}
+				style={{ width: "100%" }}
 				alt="text"
 				onClick={this.setImgPosition}
 			/>
@@ -255,82 +231,41 @@ class App extends Component {
 				className="typed-text"
 				draggable
 				style={style}
-				onDragStart={(e) => this.onDragStart(e)}
+				// onDragStart={(e) => this.onDragStart(e)}
 				onDragEnd={(e) => this.onDragEnd(e)}
 			>
 				{this.state.text}
 			</span>
 		);
 
-		const display = imgs ? (
-			imgs.map((img) => (
-				<img
-					className="grid-item"
-					key={img.id}
-					src={`${img.url}`}
-					style={{ width: "150px", height: "150px" }}
-					alt={img.id}
-					onClick={() => this.displayLargeImg(img)}
-				/>
-			))
-		) : (
-			<h4>Loading...</h4>
-		);
+		const sidebarDisplay = showText ? (
+			<InputControls
+				text={this.state.text}
+				handleSetInputField={this.setInputField}
+				onInputChange={this.onInputChange}
+				handleAddInputObject={this.addInputObject}
+			/>
+		) : showLogos ? (
+			<Stock />
+		) : showTemplates ? (
+			<GridImg displayLargeImg={this.displayLargeImg} imgs={imgs} />
+		) : null;
 
 		return (
-			<div className="container">
-				<ul className="links">
-					<li className="link-bold">Flyer Creator</li>
-					<li className="link-bold link2">Dbat</li>
-					<li>Hello Matt</li>
-				</ul>
-				<div className="grid-img-container">
-					<h3 className="header">Choose your template</h3>
-					{display}
-				</div>
+			<div className="main-container">
+				<Navbar />
+				<PdfHandler pdfObj={this.state.pdfObj} />
+				<Sidebar setSidebarDisplay={this.setSidebarDisplay} />
+				{sidebarDisplay}
 				<div className="large-img-container">
 					<div ref={this.spanContainer} className="img-text-container">
-						<h3 className="header">Customize your template</h3>
-						<p>Click on an area to add text.</p>
 						{largeImg}
 						{userText}
 					</div>
 
-					{/* <div className="input-container">
-						<label>Type your text</label>
-						<br />
-						<input
-							className="large-input"
-							name="text"
-							onChange={this.onInputChange}
-							value={this.state.text}
-						/>
-						<button disabled={!this.state.text} className="blue-btn">
-							Done
-						</button>
-					</div> */}
-					<InputControls
-						text={this.state.text}
-						handleSetInputField={this.setInputField}
-						onInputChange={this.onInputChange}
-						handleAddInputObject={this.addInputObject}
-					/>
-
-					<div className="upload-container">
-						<form onSubmit={this.onUpload}>
-							<label>Upload images</label>
-							<br />
-							<input type="file" onChange={this.handleUpload} name="imgUpload" />
-							<button className="blue-btn" onClick={this.onUpload}>
-								Upload
-							</button>
-						</form>
-					</div>
-
-					<PdfHandler pdfObj={this.state.pdfObj} />
+					<Upload handleUpload={this.handleUpload} onUpload={this.onUpload} />
 				</div>{" "}
-				{/* end of container */}
-				<Stock className="stock-container" />
+				{/* <Stock className="stock-container" /> */}
 			</div>
 		);
 	}

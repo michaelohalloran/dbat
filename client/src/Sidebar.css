@@ -1,0 +1,5 @@
+.sidebar-btns {
+	grid-column: 1/span 2;
+	list-style: none;
+	background-color: lightgray;
+}
