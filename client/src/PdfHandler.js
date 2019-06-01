@@ -6,7 +6,7 @@ import "./PdfHandler.css";
 
 const PdfHandler = ({ pdfObj }) => {
 	const generatePdf = () => {
-		console.log("hit generate PDF");
+		console.log("hit generate PDF", pdfObj);
 		axios
 			.post(`${API_BASE_URL}/pdf`, pdfObj, {
 				headers: {
@@ -16,6 +16,7 @@ const PdfHandler = ({ pdfObj }) => {
 				responseType: "blob"
 			})
 			.then((res) => {
+				console.log("res1: ", res);
 				return axios.get(`${API_BASE_URL}/pdf`, {
 					responseType: "blob",
 					headers: { Accept: "application/pdf" }

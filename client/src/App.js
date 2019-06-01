@@ -79,8 +79,6 @@ class App extends Component {
 	};
 
 	setSidebarDisplay = (e) => {
-		console.log(e.target.innerText);
-
 		if (e.target.innerText === "Text") {
 			this.setState({
 				showText: true,
@@ -114,20 +112,25 @@ class App extends Component {
 			[ "client", client.x, client.y ],
 			[ "page", page.x, page.y ]
 		];
-		console.table(coords);
-		console.log(
-			"spanContainer div left, top: ",
-			this.spanContainer.current.offsetLeft,
-			this.spanContainer.current.offsetTop
-		);
-		console.log("spanRef text left, top: ", this.spanRef.current.offsetLeft, this.spanRef.current.offsetTop);
-		console.log("imageRef left, top: ", this.imageRef.current.offsetLeft, this.imageRef.current.offsetTop);
-		console.log("clientX - offsetLeft: ", e.clientX - this.imageRef.current.offsetLeft);
-		console.log("clientY - offsetTop: ", e.clientY - this.imageRef.current.offsetTop);
+		// console.table(coords);
+		// console.log(
+		// 	"spanContainer div left, top: ",
+		// 	this.spanContainer.current.offsetLeft,
+		// 	this.spanContainer.current.offsetTop
+		// );
+		// console.log("spanRef text left, top: ", this.spanRef.current.offsetLeft, this.spanRef.current.offsetTop);
+		// console.log("imageRef left, top: ", this.imageRef.current.offsetLeft, this.imageRef.current.offsetTop);
+		// console.log("clientX - offsetLeft: ", e.clientX - this.imageRef.current.offsetLeft);
+		// console.log("clientY - offsetTop: ", e.clientY - this.imageRef.current.offsetTop);
+		// console.log("e.clientX, clientY: ", e.clientX, e.clientY);
+		const leftOffset = e.clientX - this.spanContainer.current.offsetLeft;
+		const topOffset = e.clientY - this.spanContainer.current.offsetTop;
+		console.log("left and top to be sent to DB:", leftOffset, topOffset);
 		this.setState({
 			pdfObj: {
-				top: e.clientY,
-				left: e.clientX,
+				...this.state.pdfObj,
+				top: topOffset,
+				left: leftOffset,
 				text,
 				imgUrl: selectedImg.url
 			},
@@ -157,14 +160,21 @@ class App extends Component {
 		//we then display that
 	};
 
-	onInputChange = (e) => {
-		this.setState({ [e.target.name]: e.target.value });
+	onInputChange = (name, value) => {
+		if (name === "text") {
+			this.setState({ [name]: value });
+		} else {
+			this.setState({
+				pdfObj: { ...this.state.pdfObj, [name]: value }
+			});
+		}
 	};
 
 	setInputField = (styleObject) => {
 		console.log("style object: ", styleObject);
 		this.setState({
 			pdfObj: {
+				...this.state.pdfObj,
 				color: styleObject.color,
 				fontSize: styleObject.size,
 				fontFamily: styleObject.font
@@ -225,6 +235,8 @@ class App extends Component {
 			fontFamily: `${pdfObj.fontFamily}`
 		};
 
+		console.log("style: ", style);
+
 		const userText = (
 			<span
 				ref={this.spanRef}
@@ -241,6 +253,7 @@ class App extends Component {
 		const sidebarDisplay = showText ? (
 			<InputControls
 				text={this.state.text}
+				pdfObj={this.state.pdfObj}
 				handleSetInputField={this.setInputField}
 				onInputChange={this.onInputChange}
 				handleAddInputObject={this.addInputObject}
