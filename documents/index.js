@@ -5,24 +5,53 @@ const path = require("path");
 // app.use("/uploads", express.static("uploads"));
 // app.use("/public", express.static(path.join(__dirname, 'public')));
 
-module.exports = ({ imgUrl, top, left, text }, options = "default") => {
-	console.log("module img, top, left, text: ", imgUrl, top, left, text);
+module.exports = (inputArr, options = "default") => {
+	const firstObj = inputArr.shift();
+	const { imgUrl, top, left, text, fontSize, color, fontFamily } = firstObj;
+	// console.log(
+	// 	"module img, top, left, text, size, color, font: ",
+	// 	imgUrl,
+	// 	top,
+	// 	left,
+	// 	text,
+	// 	fontSize,
+	// 	color,
+	// 	fontFamily
+	// );
+
+	// const spans = inputArr.map((input) => {
+	// 	const { color, top, left, fontSize, fontFamily, text } = input;
+	// 	const style = {
+	// 		color,
+	// 		position: relative,
+	// 		top,
+	// 		left,
+	// 		fontSize,
+	// 		fontFamily
+	// 	};
+
+	// 	return (
+	// 		<div>
+	// 			<span style={style}>text</span>
+	// 		</div>
+	// 	);
+	// });
 	const relativePath = imgUrl.replace("\\", "/");
-	console.log("options if passed: ", options);
+	// console.log("options if passed: ", options);
 	// const imgPath = "../uploads/genesee.jpg";
 	// const imgPath = `${dirName}\\uploads/genesee.jpg`;
 	// const imgPath = "file:///genesee.jpg";
 	const imgPath = `file:///C:/Users/kipsa/Desktop/dbat/uploads/genesee.jpg`;
 
 	const dynamicPath = path.join(__dirname, "../", "uploads");
-	console.log("dynamic path: ", dynamicPath);
+	// console.log("dynamic path: ", dynamicPath);
 
 	// const dynamicPath2 = __dirname.replace("\\", "/");
 	// const dynamicPath = `file:///${}`
 	const imgPath2 = `file:///C:/Users/kipsa/Desktop/dbat/${relativePath}`;
-	console.log("..dirname, dirname, imagePath, ", dirname, __dirname, imgPath);
-	console.log("imgPath 2:", imgPath2);
-	console.log("equal? ", imgPath === imgPath2); // slash is wrong direction on path2
+	// console.log("..dirname, dirname, imagePath, ", dirname, __dirname, imgPath);
+	// console.log("imgPath 2:", imgPath2);
+	// console.log("equal? ", imgPath === imgPath2); // slash is wrong direction on path2
 
 	//loop over textField objects, insert them below
 
@@ -48,7 +77,7 @@ module.exports = ({ imgUrl, top, left, text }, options = "default") => {
 
                     .text {
                         font-size: 30px;
-                        color: lightblue;
+                        color: ${color};
                         background: darkgoldenrod;
                         position: absolute;
                         top: ${top}px;

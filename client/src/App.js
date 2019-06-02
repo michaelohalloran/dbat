@@ -170,21 +170,12 @@ class App extends Component {
 		}
 	};
 
-	setInputField = (styleObject) => {
-		console.log("style object: ", styleObject);
+	addInputObject = (inputStyles) => {
+		const newInput = { ...this.state.pdfObj, ...inputStyles };
 		this.setState({
-			pdfObj: {
-				...this.state.pdfObj,
-				color: styleObject.color,
-				fontSize: styleObject.size,
-				fontFamily: styleObject.font
-			}
-		});
-	};
-
-	addInputObject = (newInput) => {
-		this.setState({
-			inputFields: [ ...this.state.inputFields, newInput ]
+			inputFields: [ ...this.state.inputFields, newInput ],
+			text: "",
+			pdfObj: {}
 		});
 	};
 
@@ -235,7 +226,32 @@ class App extends Component {
 			fontFamily: `${pdfObj.fontFamily}`
 		};
 
-		console.log("style: ", style);
+		// console.log("style: ", style);
+
+		const inputs = this.state.inputFields.map((input, i) => {
+			const { color, fontFamily, fontSize, top, left } = input;
+			const style = {
+				color,
+				fontFamily,
+				fontSize,
+				top,
+				left,
+				position: "absolute"
+			};
+			// console.log("input: ", input);
+			return (
+				<span
+					key={i}
+					// className="typed-text"
+					style={style}
+					onDragEnd={(e) => this.onDragEnd(e)}
+				>
+					{input.text}
+				</span>
+			);
+		});
+
+		// console.log("************inputs: ", inputs);
 
 		const userText = (
 			<span
@@ -253,8 +269,7 @@ class App extends Component {
 		const sidebarDisplay = showText ? (
 			<InputControls
 				text={this.state.text}
-				pdfObj={this.state.pdfObj}
-				handleSetInputField={this.setInputField}
+				pdfObj={this.state.inputFields}
 				onInputChange={this.onInputChange}
 				handleAddInputObject={this.addInputObject}
 			/>
@@ -267,12 +282,13 @@ class App extends Component {
 		return (
 			<div className="main-container">
 				<Navbar />
-				<PdfHandler pdfObj={this.state.pdfObj} />
+				<PdfHandler inputArr={this.state.inputFields} />
 				<Sidebar setSidebarDisplay={this.setSidebarDisplay} />
 				{sidebarDisplay}
 				<div className="large-img-container">
 					<div ref={this.spanContainer} className="img-text-container">
 						{largeImg}
+						{inputs}
 						{userText}
 					</div>
 

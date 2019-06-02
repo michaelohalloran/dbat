@@ -95,13 +95,10 @@ app.get("/images", async (req, res) => {
 // PDF ROUTES
 // ********************************
 app.post("/pdf", (req, res) => {
-	console.log(("req body", req.body));
-	// const options = {
-	// 	// height: "10in",
-	// 	// width: "7in"
-	// 	// filename: "./uploads/genesee.jpg"
-	// };
+	// console.log(("req body", req.body));
 	try {
+		// console.log(("try req body", req.body));
+
 		pdf.create(pdfTemplate(req.body, __dirname), {}).toFile("result.pdf", (err) => {
 			if (err) {
 				res.status(500).send(Promise.reject());
@@ -110,6 +107,8 @@ app.post("/pdf", (req, res) => {
 			//add to DB: Pdf.save().then etc.
 		});
 	} catch (e) {
+		// console.log(("req body", req.body));
+
 		res.status(500).json({ postPdf: e });
 	}
 });

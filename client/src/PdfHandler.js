@@ -4,11 +4,12 @@ import { API_BASE_URL } from "./config/config";
 import { saveAs } from "file-saver";
 import "./PdfHandler.css";
 
-const PdfHandler = ({ pdfObj }) => {
+const PdfHandler = ({ inputArr }) => {
 	const generatePdf = () => {
-		console.log("hit generate PDF", pdfObj);
+		// ***FIX THIS
+		console.log("hit generate PDF", inputArr);
 		axios
-			.post(`${API_BASE_URL}/pdf`, pdfObj, {
+			.post(`${API_BASE_URL}/pdf`, inputArr, {
 				headers: {
 					"Content-Type": "application/json",
 					Accept: "application/pdf"
