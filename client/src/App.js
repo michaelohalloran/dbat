@@ -22,19 +22,17 @@ class App extends Component {
 			inputFields: [],
 			text: "",
 			selectedImg: null,
-			textLeft: "",
-			textTop: "",
 			singleImg: "",
 			uploadedFile: "",
 			uploadUrl: "",
 			pdfObj: {
 				imgUrl: "",
-				top: "",
-				left: "",
+				top: "50%",
+				left: "50%",
 				text: "",
-				fontSize: "",
-				color: "",
-				fontFamily: ""
+				fontSize: "16px",
+				color: "black",
+				fontFamily: "Helvetica"
 			}
 		};
 
@@ -133,9 +131,7 @@ class App extends Component {
 				left: leftOffset,
 				text,
 				imgUrl: selectedImg.url
-			},
-			textLeft: `${e.pageX}px`,
-			textTop: `${e.pageY}px`
+			}
 		});
 	};
 
@@ -171,11 +167,22 @@ class App extends Component {
 	};
 
 	addInputObject = (inputStyles) => {
-		const newInput = { ...this.state.pdfObj, ...inputStyles };
+		const { pdfObj, inputFields } = this.state;
+		// add what's in state if user has not dragged
+		const text = pdfObj.text ? pdfObj.text : this.state.text;
+		const newInput = { ...pdfObj, ...inputStyles, text };
 		this.setState({
-			inputFields: [ ...this.state.inputFields, newInput ],
+			inputFields: [ ...inputFields, newInput ],
 			text: "",
-			pdfObj: {}
+			pdfObj: {
+				imgUrl: "",
+				top: "50%",
+				left: "50%",
+				text: "",
+				fontSize: "16px",
+				color: "black",
+				fontFamily: "Helvetica"
+			}
 		});
 	};
 
@@ -202,6 +209,23 @@ class App extends Component {
 			console.log("DB response: ", res);
 			//fetch images from DB
 			this.loadImages();
+		});
+	};
+
+	// reset everything when user clicks "New"
+	clearText = () => {
+		this.setState({
+			inputFields: [],
+			pdfObj: {
+				imgUrl: "",
+				top: "",
+				left: "50%",
+				text: "50%",
+				fontSize: "16px",
+				color: "black",
+				fontFamily: "Helvetica"
+			},
+			text: ""
 		});
 	};
 
@@ -238,7 +262,7 @@ class App extends Component {
 				left,
 				position: "absolute"
 			};
-			// console.log("input: ", input);
+
 			return (
 				<span
 					key={i}
@@ -250,8 +274,6 @@ class App extends Component {
 				</span>
 			);
 		});
-
-		// console.log("************inputs: ", inputs);
 
 		const userText = (
 			<span
@@ -281,7 +303,7 @@ class App extends Component {
 
 		return (
 			<div className="main-container">
-				<Navbar />
+				<Navbar clearText={this.clearText} />
 				<PdfHandler inputArr={this.state.inputFields} />
 				<Sidebar setSidebarDisplay={this.setSidebarDisplay} />
 				{sidebarDisplay}
