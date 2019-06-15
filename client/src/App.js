@@ -77,19 +77,19 @@ class App extends Component {
 	};
 
 	setSidebarDisplay = (e) => {
-		if (e.target.innerText === "Text") {
+		if (e.currentTarget.innerText === "Text") {
 			this.setState({
 				showText: true,
 				showLogos: false,
 				showTemplates: false
 			});
-		} else if (e.target.innerText === "Templates") {
+		} else if (e.currentTarget.innerText === "Templates") {
 			this.setState({
 				showText: false,
 				showLogos: false,
 				showTemplates: true
 			});
-		} else if (e.target.innerText === "Graphics/Logos") {
+		} else if (e.currentTarget.innerText === "Graphics/Logos") {
 			this.setState({
 				showText: false,
 				showLogos: true,
@@ -305,7 +305,12 @@ class App extends Component {
 			<div className="main-container">
 				<Navbar clearText={this.clearText} />
 				<PdfHandler inputArr={this.state.inputFields} />
-				<Sidebar setSidebarDisplay={this.setSidebarDisplay} />
+				<Sidebar
+					showLogos={showLogos}
+					showTemplates={showTemplates}
+					showText={showText}
+					setSidebarDisplay={this.setSidebarDisplay}
+				/>
 				{sidebarDisplay}
 				<div className="large-img-container">
 					<div ref={this.spanContainer} className="img-text-container">
