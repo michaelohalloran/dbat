@@ -27,12 +27,15 @@ class App extends Component {
 			uploadUrl: "",
 			pdfObj: {
 				imgUrl: "",
-				top: "50%",
+				top: "25%",
 				left: "50%",
 				text: "",
 				fontSize: "16px",
 				color: "black",
-				fontFamily: "Helvetica"
+				fontFamily: "Helvetica",
+				fontWeight: "normal",
+				fontStyle: "normal",
+				textDecoration: "none"
 			}
 		};
 
@@ -176,12 +179,15 @@ class App extends Component {
 			text: "",
 			pdfObj: {
 				imgUrl: "",
-				top: "50%",
+				top: "25%",
 				left: "50%",
 				text: "",
 				fontSize: "16px",
 				color: "black",
-				fontFamily: "Helvetica"
+				fontFamily: "Helvetica",
+				fontWeight: "normal",
+				fontStyle: "normal",
+				textDecoration: "none"
 			}
 		});
 	};
@@ -223,7 +229,10 @@ class App extends Component {
 				text: "50%",
 				fontSize: "16px",
 				color: "black",
-				fontFamily: "Helvetica"
+				fontFamily: "Helvetica",
+				fontWeight: "normal",
+				fontStyle: "normal",
+				textDecoration: "none"
 			},
 			text: ""
 		});
@@ -247,20 +256,27 @@ class App extends Component {
 			left: `${pdfObj.left}px`,
 			fontSize: `${pdfObj.fontSize}px`,
 			color: `${pdfObj.color}` || "black",
-			fontFamily: `${pdfObj.fontFamily}`
+			fontFamily: `${pdfObj.fontFamily}`,
+			fontWeight: `${pdfObj.fontWeight}`,
+			fontStyle: `${pdfObj.fontStyle}`,
+			textDecoration: `${pdfObj.textDecoration}`
 		};
 
 		// console.log("style: ", style);
 
 		const inputs = this.state.inputFields.map((input, i) => {
-			const { color, fontFamily, fontSize, top, left } = input;
+			const { color, fontFamily, fontSize, top, left, textDecoration, fontStyle, fontWeight } = input;
 			const style = {
 				color,
 				fontFamily,
 				fontSize,
+				fontStyle,
+				textDecoration,
+				fontWeight,
 				top,
 				left,
-				position: "absolute"
+				position: "absolute",
+				transform: "translate(-50%, -50%)"
 			};
 
 			return (

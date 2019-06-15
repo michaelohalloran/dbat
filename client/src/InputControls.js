@@ -4,23 +4,44 @@ import React, { Component } from "react";
 
 class InputControls extends Component {
 	state = {
-		fontFamily: "",
-		color: "",
-		fontSize: "",
-		typedText: ""
+		typedText: "",
+		fontWeight: "normal",
+		textDecoration: "none",
+		fontStyle: "normal"
 	};
 
-	generateFontSizes = () => {
-		let options = [];
+	generateColors = () => {
+		const colors = [ "black", "white", "red", "orange", "yellow", "green", "blue", "purple", "brown" ];
 
-		for (let i = 2; i < 42; i += 2) {
-			options.push(i);
-		}
+		return colors.map((color) => (
+			<option key={color} value={color}>
+				{`${color[0].toUpperCase()}${color.slice(1)}`}
+			</option>
+		));
+	};
 
-		return options.map((num) => {
+	generateFonts = () => {
+		const fonts = [
+			"Times New Roman",
+			"Helvetica",
+			"Arial",
+			"Georgia",
+			"Palatino Linotype",
+			"Book Antiqua",
+			"Gadget",
+			"Comic Sans MS",
+			"Impact",
+			"Lucida Sans Unicode",
+			"Lucida Grande",
+			"Charcoal",
+			"Tahoma",
+			"Geneva",
+			"Verdana"
+		];
+		return fonts.map((font) => {
 			return (
-				<option key={num} value={num}>
-					{num}
+				<option key={font} value={font}>
+					{`${font[0].toUpperCase()}${font.slice(1)}`}
 				</option>
 			);
 		});
@@ -41,12 +62,47 @@ class InputControls extends Component {
 		);
 	};
 
+	toggleStyle = (e) => {
+		let evtValue = e.target.value;
+		const evtName = e.target.name;
+		switch (evtName) {
+			case "fontWeight":
+				evtValue = e.target.value === "normal" ? "bold" : "normal";
+				break;
+			case "fontStyle":
+				evtValue = e.target.value === "normal" ? "italic" : "normal";
+				break;
+			case "textDecoration":
+				evtValue = e.target.value === "none" ? "underline" : "none";
+				break;
+			default:
+				console.log("value not found");
+		}
+
+		const { onInputChange } = this.props;
+		this.setState(
+			{
+				[e.target.name]: evtValue
+			},
+			() => {
+				onInputChange(evtName, evtValue);
+			}
+		);
+	};
+
 	// set finalized styles for the current input
 	updateInputs = () => {
-		const { text, handleAddInputObject } = this.props;
-		const { color, fontSize, fontFamily } = this.state;
+		const { handleAddInputObject } = this.props;
+		const {
+			color = "black",
+			fontSize = 16,
+			fontFamily = "Helvetica",
+			fontWeight,
+			textDecoration,
+			fontStyle
+		} = this.state;
 		// push completed input styles into the inputFields state array
-		handleAddInputObject({ color, fontFamily, fontSize: `${fontSize}px` });
+		handleAddInputObject({ color, fontFamily, textDecoration, fontStyle, fontWeight, fontSize: `${fontSize}px` });
 		// clear the input state and make a new empty one
 		this.setState({ color: "", fontFamily: "", fontSize: "" });
 	};
@@ -57,40 +113,75 @@ class InputControls extends Component {
 
 		return (
 			<div className="input-container">
-				<label>Enter text</label>
+				<h3>Enter text</h3>
 				<br />
 				<input className="large-input" name="text" onChange={this.handleChange} value={text} />
 				{/* {error && <span>{error}</span>} */}
-				<button onClick={() => this.updateInputs()} disabled={!text} className="blue-btn">
-					Add text
-				</button>
 
 				<div className="font-controls">
-					<select value={color ? color : "Color"} onChange={this.handleChange} name="color" id="color">
-						<option value="black">Black</option>
-						<option value="red">Red</option>
-						<option value="yellow">Yellow</option>
-						<option value="white">White</option>
-					</select>
+					<div className="select-wrapper">
+						<label htmlFor="color">Color</label>
+						<select value={color ? color : "Color"} onChange={this.handleChange} name="color" id="color">
+							{this.generateColors()};
+						</select>
+					</div>
 
-					<select
-						value={fontFamily ? fontFamily : "Font"}
-						onChange={this.handleChange}
-						name="fontFamily"
-						id="fontFamily"
-					>
-						<option value="Helvetica">Helvetica</option>
-						<option value="Georgia">Georgia</option>
-					</select>
+					<div className="select-wrapper">
+						<label htmlFor="fontFamily">Font</label>
+						<select
+							value={fontFamily ? fontFamily : "Font"}
+							onChange={this.handleChange}
+							name="fontFamily"
+							id="fontFamily"
+						>
+							{this.generateFonts()}
+						</select>
+					</div>
 
-					<select
-						value={fontSize ? fontSize : "Font Size"}
-						onChange={this.handleChange}
-						name="fontSize"
-						id="fontSize"
-					>
-						{this.generateFontSizes()}
-					</select>
+					<div className="select-wrapper">
+						<label htmlFor="fontSize">Size</label>
+						<input
+							type="number"
+							min="1"
+							value={fontSize ? fontSize : "16px"}
+							onChange={this.handleChange}
+							name="fontSize"
+							id="fontSize"
+						/>
+					</div>
+
+					<div className="style-btn-wrapper">
+						<button
+							onClick={this.toggleStyle}
+							value={this.state.fontWeight}
+							name="fontWeight"
+							className={`font-btn ${this.state.fontWeight === "bold" ? "pressed" : ""}`}
+						>
+							B
+						</button>
+						<button
+							onClick={this.toggleStyle}
+							value={this.state.fontStyle}
+							name="fontStyle"
+							className={`font-btn ${this.state.fontStyle === "italic" ? "pressed" : ""}`}
+						>
+							I
+						</button>
+						<button
+							onClick={this.toggleStyle}
+							value={this.state.textDecoration}
+							name="textDecoration"
+							className={`font-btn ${this.state.textDecoration === "underline" ? "pressed" : ""}`}
+						>
+							U
+						</button>
+					</div>
+
+					<div className="btn-wrapper">
+						<button onClick={() => this.updateInputs()} disabled={!text} className="blue-btn add-btn">
+							Add text
+						</button>
+					</div>
 				</div>
 			</div>
 		);
