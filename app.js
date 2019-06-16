@@ -50,9 +50,13 @@ mongoose
 // ROUTES
 // **********************************
 
-app.get("/", (req, res) => {
-	res.send("Testing get route");
-});
+if (process.env.NODE_ENV === "production") {
+	app.use(express.static("client/build"));
+
+	app.get("*", (req, res) => {
+		res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+	});
+}
 
 // @route POST /images
 //desc: Post new image
@@ -129,14 +133,6 @@ app.use((req, res, next) => {
 	err.status = 404;
 	next(err);
 });
-
-if (process.env.NODE_ENV === "production") {
-	app.use(express.static("client/build"));
-
-	app.get("*", (req, res) => {
-		res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
-	});
-}
 
 app.listen(PORT, () => {
 	console.log(`Server started on port ${PORT}`);
