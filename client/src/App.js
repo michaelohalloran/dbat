@@ -135,8 +135,8 @@ class App extends Component {
 		this.setState({
 			pdfObj: {
 				...this.state.pdfObj,
-				top: topOffset,
-				left: leftOffset,
+				top: `${topOffset}px`,
+				left: `${leftOffset}px`,
 				text,
 				imgUrl: selectedImg.url
 			}
@@ -229,9 +229,9 @@ class App extends Component {
 			inputFields: [],
 			pdfObj: {
 				...this.state.pdfObj,
-				top: "",
+				top: "25%",
 				left: "50%",
-				text: "50%",
+				text: "",
 				fontSize: "16px",
 				color: "black",
 				fontFamily: "Helvetica",
@@ -242,6 +242,24 @@ class App extends Component {
 			text: ""
 		});
 	};
+
+	calcStyle() {
+		let { pdfObj } = this.state;
+		pdfObj.top = pdfObj.top.includes("px") ? pdfObj.top : "25%";
+		pdfObj.left = pdfObj.left.includes("px") ? pdfObj.left : "50%";
+		pdfObj.fontSize = pdfObj.fontSize.includes("px") ? pdfObj.fontSize : `${pdfObj.fontSize}px`;
+
+		return {
+			top: `${pdfObj.top}`,
+			left: `${pdfObj.left}`,
+			fontSize: `${pdfObj.fontSize}`,
+			color: `${pdfObj.color}` || "black",
+			fontFamily: `${pdfObj.fontFamily}`,
+			fontWeight: `${pdfObj.fontWeight}`,
+			fontStyle: `${pdfObj.fontStyle}`,
+			textDecoration: `${pdfObj.textDecoration}`
+		};
+	}
 
 	render() {
 		const { imgs, selectedImg, pdfObj, showLogos, showTemplates, showText } = this.state;
@@ -256,16 +274,16 @@ class App extends Component {
 			/>
 		) : null;
 
-		const style = {
-			top: `${pdfObj.top}px`,
-			left: `${pdfObj.left}px`,
-			fontSize: `${pdfObj.fontSize}px`,
-			color: `${pdfObj.color}` || "black",
-			fontFamily: `${pdfObj.fontFamily}`,
-			fontWeight: `${pdfObj.fontWeight}`,
-			fontStyle: `${pdfObj.fontStyle}`,
-			textDecoration: `${pdfObj.textDecoration}`
-		};
+		// const style = {
+		// 	top: `${pdfObj.top}px`,
+		// 	left: `${pdfObj.left}px`,
+		// 	fontSize: `${pdfObj.fontSize}px`,
+		// 	color: `${pdfObj.color}` || "black",
+		// 	fontFamily: `${pdfObj.fontFamily}`,
+		// 	fontWeight: `${pdfObj.fontWeight}`,
+		// 	fontStyle: `${pdfObj.fontStyle}`,
+		// 	textDecoration: `${pdfObj.textDecoration}`
+		// };
 
 		// console.log("style: ", style);
 
@@ -301,7 +319,7 @@ class App extends Component {
 				ref={this.spanRef}
 				className="typed-text"
 				draggable
-				style={style}
+				style={this.calcStyle()}
 				// onDragStart={(e) => this.onDragStart(e)}
 				onDragEnd={(e) => this.onDragEnd(e)}
 			>
@@ -312,7 +330,7 @@ class App extends Component {
 		const sidebarDisplay = showText ? (
 			<InputControls
 				text={this.state.text}
-				pdfObj={this.state.inputFields}
+				pdfObj={this.state.pdfObj}
 				onInputChange={this.onInputChange}
 				handleAddInputObject={this.addInputObject}
 			/>

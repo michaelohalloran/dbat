@@ -82,8 +82,8 @@ module.exports = (inputArr, dirName, options = "default") => {
 							style="
 								color: ${input.color}; 
 								position: absolute;
-								top: ${input.top}px; 
-								left: ${input.left}px;
+								top: ${input.top}; 
+								left: ${input.left};
 								font-size: ${input.fontSize};
 								font-family: ${input.fontFamily};
 								transform: translate(-50%, -50%);
