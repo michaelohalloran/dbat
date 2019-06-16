@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "./App.css";
 import axios from "axios";
 import Stock from "./Stock";
-import { API_BASE_URL } from "./config/config";
+import { API_BASE_URL } from "./config";
 import PdfHandler from "./PdfHandler";
 import Upload from "./Upload";
 import InputControls from "./InputControls";
