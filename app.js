@@ -31,7 +31,7 @@ const fileFilter = (req, file, cb) => {
 };
 const upload = multer({ storage, fileFilter });
 
-const db = require("./config/keys").mongoURI;
+const db = require("./keys").mongoURI;
 const Image = require("./models/Image");
 
 app.use(cors());
