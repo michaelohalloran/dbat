@@ -107,7 +107,6 @@ class App extends Component {
 	};
 
 	onDragEnd = (e) => {
-		// console.log("dragEnd evt: ", e);
 		const { text, selectedImg } = this.state;
 		console.log("state in dragEnd: ", this.state);
 		const screen = { x: e.screenX, y: e.screenY };
@@ -118,7 +117,6 @@ class App extends Component {
 			[ "client", client.x, client.y ],
 			[ "page", page.x, page.y ]
 		];
-		// console.table(coords);
 		// console.log(
 		// 	"spanContainer div left, top: ",
 		// 	this.spanContainer.current.offsetLeft,
