@@ -72,7 +72,12 @@ class App extends Component {
 		const { imgs } = this.state;
 		let randomIdx = Math.floor(Math.random() * imgs.length);
 		let largeImg = imgs[randomIdx];
-		this.setState({ selectedImg: largeImg });
+		// need to set imgUrl here, as user may not drag text (only other place it gets set)
+		this.setState({
+			selectedImg: largeImg,
+			imgUrl: largeImg.url,
+			pdfObj: { ...this.state.pdfObj, imgUrl: largeImg.url }
+		});
 	};
 
 	setSelectedImg = (img) => {
@@ -178,7 +183,7 @@ class App extends Component {
 			inputFields: [ ...inputFields, newInput ],
 			text: "",
 			pdfObj: {
-				imgUrl: "",
+				...pdfObj,
 				top: "25%",
 				left: "50%",
 				text: "",
@@ -223,7 +228,7 @@ class App extends Component {
 		this.setState({
 			inputFields: [],
 			pdfObj: {
-				imgUrl: "",
+				...this.state.pdfObj,
 				top: "",
 				left: "50%",
 				text: "50%",
