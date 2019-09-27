@@ -139,5 +139,6 @@ app.use((req, res, next) => {
 });
 
 app.listen(PORT, () => {
+	console.log("process", process.env);
 	console.log(`Server started on port ${PORT}`);
 });
