@@ -51,13 +51,15 @@ mongoose
 // ROUTES
 // **********************************
 
-// if (process.env.NODE_ENV === "production") {
-// 	app.use(express.static("client/build"));
+if (process.env.NODE_ENV === "production") {
+	app.use(express.static("client/build"));
 
-// 	app.get("*", (req, res) => {
-// 		res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
-// 	});
-// }
+	console.log("dirname", __dirname);
+
+	app.get("*", (req, res) => {
+		res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+	});
+}
 
 // @route POST api/images
 //desc: Post new image
