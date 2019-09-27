@@ -132,6 +132,7 @@ app.get("/api/pdf", (req, res) => {
 //404 Handler
 // **********************************
 app.use((req, res, next) => {
+	console.log("process", process);
 	let err = new Error("Page not found");
 	err.status = 404;
 	next(err);
