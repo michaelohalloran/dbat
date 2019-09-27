@@ -7,6 +7,7 @@ const pdf = require("html-pdf");
 const mongoose = require("mongoose");
 const path = require("path");
 const pdfTemplate = require("./documents/index");
+const { mongoURI } = require("./keys");
 
 //make image uploads folder accessible publicly
 app.use("/uploads", express.static("uploads"));
@@ -31,7 +32,7 @@ const fileFilter = (req, file, cb) => {
 };
 const upload = multer({ storage, fileFilter });
 
-const db = process.env.MONGODB_URI;
+const db = mongoURI;
 const Image = require("./models/Image");
 
 app.use(cors());
