@@ -51,18 +51,18 @@ mongoose
 // ROUTES
 // **********************************
 
-if (process.env.NODE_ENV === "production") {
-	app.use(express.static("client/build"));
+// if (process.env.NODE_ENV === "production") {
+// 	app.use(express.static("client/build"));
 
-	app.get("*", (req, res) => {
-		res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
-	});
-}
+// 	app.get("*", (req, res) => {
+// 		res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+// 	});
+// }
 
-// @route POST /images
+// @route POST api/images
 //desc: Post new image
 //@access Private
-app.post("/images", upload.single("image"), async (req, res) => {
+app.post("/api/images", upload.single("image"), async (req, res) => {
 	// res.send("POST images route");
 
 	console.log("incoming POST req.file: ", req.file);
@@ -78,10 +78,10 @@ app.post("/images", upload.single("image"), async (req, res) => {
 	}
 });
 
-// @route GET /images
+// @route GET /api/images
 //desc: Get all images
 //@access Private
-app.get("/images", async (req, res) => {
+app.get("/api/images", async (req, res) => {
 	// res.send("Images GET route");
 
 	// //retrieve images
@@ -99,7 +99,7 @@ app.get("/images", async (req, res) => {
 // ********************************
 // PDF ROUTES
 // ********************************
-app.post("/pdf", (req, res) => {
+app.post("/api/pdf", (req, res) => {
 	// console.log(("req body", req.body));
 	try {
 		// console.log(("try req body", req.body));
@@ -118,7 +118,7 @@ app.post("/pdf", (req, res) => {
 	}
 });
 
-app.get("/pdf", (req, res) => {
+app.get("/api/pdf", (req, res) => {
 	try {
 		res.sendFile(`${__dirname}/result.pdf`);
 	} catch (e) {
