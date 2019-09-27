@@ -1,1 +1,1 @@
-export const API_BASE_URL = process.env.HEROKU_APP_NAME || "http://localhost:5000";
+export const API_BASE_URL = process.env.BASE_URL || "http://localhost:5000";
