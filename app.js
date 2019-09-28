@@ -65,7 +65,6 @@ if (process.env.NODE_ENV === "production") {
 app.post("/api/images", upload.single("image"), async (req, res) => {
 	// res.send("POST images route");
 
-	console.log("incoming POST req.file: ", req.file);
 	// //add image
 	try {
 		const newImg = new Image({
