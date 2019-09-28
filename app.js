@@ -37,8 +37,6 @@ const Image = require("./models/Image");
 app.use(cors());
 app.use(express.json());
 
-const PORT = process.env.PORT || 5000;
-
 //Connect to Mongo
 mongoose
 	.connect(db, { useNewUrlParser: true })
@@ -48,16 +46,6 @@ mongoose
 // **********************************
 // ROUTES
 // **********************************
-
-if (process.env.NODE_ENV === "production") {
-	app.use(express.static("client/build"));
-
-	console.log("dirname", __dirname);
-
-	app.get("*", (req, res) => {
-		res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
-	});
-}
 
 // @route POST api/images
 //desc: Post new image
@@ -125,17 +113,29 @@ app.get("/api/pdf", (req, res) => {
 	}
 });
 
+if (process.env.NODE_ENV === "production") {
+	app.use(express.static("client/build"));
+
+	console.log("dirname", __dirname);
+
+	app.get("*", (req, res) => {
+		res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+	});
+}
+
 // **********************************
 //404 Handler
 // **********************************
-app.use((req, res, next) => {
-	console.log("process", process);
-	let err = new Error("Page not found");
-	err.status = 404;
-	next(err);
-});
+// app.use((req, res, next) => {
+// 	console.log("process", process);
+// 	let err = new Error("Page not found");
+// 	err.status = 404;
+// 	next(err);
+// });
+
+const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-	console.log("process", process.env);
+	// console.log("process", process.env);
 	console.log(`Server started on port ${PORT}`);
 });
