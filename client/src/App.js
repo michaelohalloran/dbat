@@ -45,7 +45,7 @@ class App extends Component {
 	}
 
 	loadImages = async () => {
-		let response = await axios.get(`${API_BASE_URL}/api/images`);
+		let response = await axios.get(`/api/images`);
 		let imgsArr = response.data.reduce((imgs, nextImgObj) => {
 			imgs.push({
 				id: nextImgObj._id,
