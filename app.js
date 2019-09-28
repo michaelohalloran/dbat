@@ -2,7 +2,6 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const bodyParser = require("body-parser");
 const pdf = require("html-pdf");
 const mongoose = require("mongoose");
 const path = require("path");
@@ -36,8 +35,7 @@ const db = mongoURI;
 const Image = require("./models/Image");
 
 app.use(cors());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+app.use(express.json());
 
 const PORT = process.env.PORT || 5000;
 
