@@ -2,6 +2,7 @@ import React from "react";
 import axios from "axios";
 import { saveAs } from "file-saver";
 import "./PdfHandler.css";
+import { API_BASE_URL } from "./config";
 
 const PdfHandler = ({ inputArr }) => {
 	const generatePdf = () => {
