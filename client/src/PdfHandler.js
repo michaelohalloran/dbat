@@ -8,7 +8,7 @@ const PdfHandler = ({ inputArr }) => {
 		// ***FIX THIS
 		console.log("hit generate PDF", inputArr);
 		axios
-			.post(`/api/pdf`, inputArr, {
+			.post(`${API_BASE_URL}/api/pdf`, inputArr, {
 				headers: {
 					"Content-Type": "application/json",
 					Accept: "application/pdf"
@@ -17,7 +17,7 @@ const PdfHandler = ({ inputArr }) => {
 			})
 			.then((res) => {
 				console.log("res1: ", res);
-				return axios.get(`/api/pdf`, {
+				return axios.get(`${API_BASE_URL}/api/pdf`, {
 					responseType: "blob",
 					headers: { Accept: "application/pdf" }
 				});

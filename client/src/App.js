@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "./App.css";
 import axios from "axios";
 import Stock from "./Stock";
+import { API_BASE_URL } from "./config";
 import PdfHandler from "./PdfHandler";
 import Upload from "./Upload";
 import InputControls from "./InputControls";
@@ -44,7 +45,7 @@ class App extends Component {
 	}
 
 	loadImages = async () => {
-		let response = await axios.get(`/api/images`);
+		let response = await axios.get(`${API_BASE_URL}/api/images`);
 		let imgsArr = response.data.reduce((imgs, nextImgObj) => {
 			imgs.push({
 				id: nextImgObj._id,
@@ -213,7 +214,7 @@ class App extends Component {
 		e.preventDefault();
 		const fd = new FormData();
 		fd.append("image", this.state.uploadedFile, this.state.uploadedFile.name);
-		axios.post(`/api/images`, fd).then((res) => {
+		axios.post(`${API_BASE_URL}/api/images`, fd).then((res) => {
 			console.log("DB response: ", res);
 			//fetch images from DB
 			this.loadImages();
